@@ -1,0 +1,58 @@
+# Production deployment WITH automatic HTTPS (Let's Encrypt via Caddy).
+#
+# This is a COMPLETE, standalone stack — use it INSTEAD of docker-compose.yml,
+# not merged with it. (Kept separate so it works on any Compose version, with
+# no reliance on list-override tags.)
+#
+# Quickstart:
+#   1. Point your domain's DNS A/AAAA record at this server.
+#   2. cp deploy/env.example .env   and set SITE_ADDRESS (+ ADMIN_PASSWORD).
+#   3. docker compose -f docker-compose.tls.yml up -d
+#
+# Caddy publishes 80/443, obtains and auto-renews a Let's Encrypt certificate
+# for SITE_ADDRESS, and proxies to the directory app over the internal network.
+# The app itself is never exposed to the host.
+
+services:
+  directory:
+    build: .
+    expose:
+      - "8080"
+    environment:
+      - PORT=8080
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
+      - ADMIN_TOKEN_SECRET=${ADMIN_TOKEN_SECRET:-}
+    volumes:
+      - ./data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    depends_on:
+      - directory
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      - SITE_ADDRESS=${SITE_ADDRESS:?set SITE_ADDRESS to your domain, e.g. help.example.org}
+      - UPSTREAM=directory:8080
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,23 @@
+# Caddy config for the Community Resource Directory.
+# Caddy automatically obtains and renews Let's Encrypt certificates for the
+# domain(s) below and terminates TLS, proxying to the app over plain HTTP
+# on the internal network. No cron, no certbot, no manual renewal.
+#
+# {$SITE_ADDRESS} and {$UPSTREAM} are filled from environment variables
+# (see .env / docker-compose.tls.yml). SITE_ADDRESS should be your domain,
+# e.g. help.example.org. Use :80 instead of a domain to test without TLS.
+
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	reverse_proxy {$UPSTREAM:directory:8080}
+
+	# Security headers. HSTS is commented out by default: only enable it once
+	# you are certain the domain will always be HTTPS (it is hard to undo).
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy no-referrer-when-downgrade
+		# Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+}

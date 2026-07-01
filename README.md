@@ -59,6 +59,18 @@ Then open http://localhost:8080/admin and sign in. Edits are written straight to
 
 **What the gate is and isn't.** The password is compared in constant time and exchanged for a short-lived signed token, so it's real access control for a self-hosted box. It is **not** a replacement for HTTPS: over plain `http://` the password crosses the wire in the clear. If you expose this instance beyond localhost, put it behind a reverse proxy with TLS. If `ADMIN_PASSWORD` is unset, the admin API is fully closed (fail-shut) and the site runs read-only.
 
+## Deploying on your own domain with HTTPS
+
+To put this on a real domain with a Let's Encrypt certificate — which is what
+makes the `/admin` editor safe to expose — see [`deploy/`](deploy/). The quickest
+path is Docker + Caddy (automatic HTTPS, no certbot):
+
+    cp deploy/env.example .env        # set SITE_ADDRESS and ADMIN_PASSWORD
+    docker compose -f docker-compose.tls.yml up -d
+
+There's also a bare-host installer (`deploy/install-baremetal.sh`) and an
+nginx + certbot alternative. Full instructions in [deploy/README.md](deploy/README.md).
+
 ## Stack
 
 Plain Node (built-in `http` + `node:sqlite`), a static HTML/JS front-end, MapLibre for the map. No framework, no build step — chosen so it stays maintainable by many hands over many years. That longevity is the whole point.
