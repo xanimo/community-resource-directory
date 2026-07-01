@@ -3,3 +3,7 @@ node_modules/
 .DS_Store
 data/*.db
 .env
+
+# HSDS export output
+hsds-export/
+hsds-export.zip

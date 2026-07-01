@@ -49,6 +49,23 @@ Two ways to get services in.
 
 The importer joins the HSDS relational model (service → organization, service → location → address, with phones and schedules) and flattens it into what the app serves. Records without coordinates are skipped, since they can't be placed on a map or distance-sorted. Categories are inferred from HSDS taxonomy terms and text. Drop `--write` to preview on stdout instead of overwriting `data/seed.json`.
 
+**Export your data as HSDS.** The directory is a full ecosystem citizen: it can publish its data back out in the same standard, so another system — ORServices, a 2-1-1, any HSDS tool — can ingest it.
+
+    # HSDS 3.x tabular data package (datapackage.json + one CSV per table)
+    node importer/export-hsds.js --out ./hsds-export
+
+    # bundle it as a single portable .zip
+    node importer/export-hsds.js --out ./hsds-export --zip
+
+    # or a dereferenced HSDS JSON service list
+    node importer/export-hsds.js --format json > hsds.json
+
+The exporter re-splits the app's flat records into the canonical HSDS 3.x tables
+(organizations, services, service_at_location, locations, addresses, phones,
+schedules, taxonomy_terms) with deterministic ids, so re-exports of unchanged
+data are byte-stable. Because import and export use the same standard, the loop
+is closed: **import real HSDS → edit in `/admin` → export real HSDS.**
+
 **Or hand-edit** `data/seed.json` for a small directory: each service needs a name, category, address, `latitude`, `longitude`, and ideally phone/hours/website. Categories are listed under `meta.taxonomy`. Restart and your data is live.
 
 ## Editing data in the browser (admin)
