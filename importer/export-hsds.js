@@ -26,6 +26,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { mapCategory, OE_PARENTS } from './openeligibility-map.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -104,12 +105,25 @@ function build(seed) {
     if (s.phone) t.phones.push({ id: `ph-${sid}`, service_at_location_id: salId, service_id: sid, location_id: locId, number: s.phone, type: 'voice' });
     // schedule (we only have a human string -> put it in description)
     if (s.hours) t.schedules.push({ id: `sch-${sid}`, service_at_location_id: salId, service_id: sid, location_id: locId, description: s.hours });
-    // taxonomy term for the category
+    // taxonomy term for the category, mapped to Open Eligibility where possible.
+    // Key terms by their resolved code so the same OE term isn't emitted twice
+    // (e.g. a 'medical' category and a 'hygiene' parent both resolving to 1206).
     if (s.category) {
-      if (!taxSeen.has(s.category)) {
-        const tid = `tax-${s.category}`;
-        taxSeen.set(s.category, tid);
-        t.taxonomy_terms.push({ id: tid, code: s.category, name: s.category, taxonomy: 'local', language: 'en' });
+      const oe = mapCategory(s.category);
+      const termId = (code) => `tax-${code}`;
+      // emit Open Eligibility parent chain first, deduped by code
+      let pid = oe.parent_id;
+      while (pid && OE_PARENTS[pid] && !taxSeen.has(pid)) {
+        taxSeen.set(pid, termId(pid));
+        const p = OE_PARENTS[pid];
+        t.taxonomy_terms.push({ id: termId(pid), code: p.code, name: p.name,
+          parent_id: p.parent_id ? termId(p.parent_id) : '', taxonomy: p.taxonomy, language: 'en' });
+        pid = p.parent_id;
+      }
+      if (!taxSeen.has(oe.code)) {
+        taxSeen.set(oe.code, termId(oe.code));
+        t.taxonomy_terms.push({ id: termId(oe.code), code: oe.code, name: oe.name,
+          parent_id: oe.parent_id ? termId(oe.parent_id) : '', taxonomy: oe.taxonomy, language: 'en' });
       }
     }
   }
@@ -130,7 +144,7 @@ function toDereferencedJSON(seed) {
         schedules: s.hours ? [{ description: s.hours }] : [],
       },
     }],
-    service_taxonomies: s.category ? [{ taxonomy_term: { code: s.category, name: s.category } }] : [],
+    service_taxonomies: s.category ? [{ taxonomy_term: (() => { const oe = mapCategory(s.category); return { code: oe.code, name: oe.name, taxonomy: oe.taxonomy }; })() }] : [],
   }));
 }
 

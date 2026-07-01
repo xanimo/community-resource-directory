@@ -60,7 +60,7 @@ The importer joins the HSDS relational model (service → organization, service 
     # or a dereferenced HSDS JSON service list
     node importer/export-hsds.js --format json > hsds.json
 
-The exporter re-splits the app's flat records into the canonical HSDS 3.x tables
+The exporter re-splits the app's flat records into the canonical HSDS 3.x tables. The exporter maps each service category to the [Open Eligibility](https://github.com/openreferral/openeligibility) taxonomy — the standard vocabulary HSDS recommends — using real term codes (e.g. food→1102, medical→1206 Medical Care, legal→1111) with their parent chain, so categories line up with other HSDS systems. Where no Open Eligibility term fits (e.g. free computer access), the term is kept local rather than forced into a bad match. It re-splits records
 (organizations, services, service_at_location, locations, addresses, phones,
 schedules, taxonomy_terms) with deterministic ids, so re-exports of unchanged
 data are byte-stable. Because import and export use the same standard, the loop
