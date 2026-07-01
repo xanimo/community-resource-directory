@@ -1,5 +1,7 @@
 # Deploying with your own domain + HTTPS
 
+> New to this? **[PUBLISHING.md](PUBLISHING.md)** is a full step-by-step VM walkthrough (get a server, point DNS, launch with HTTPS). The sections below are the reference for each option.
+
 Everything here gets the directory onto a real domain with a Let's Encrypt
 certificate, so the site (and the password-gated `/admin` editor) run over
 HTTPS instead of plaintext.
