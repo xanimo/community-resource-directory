@@ -5,7 +5,13 @@ services:
       - "8080:8080"
     environment:
       - PORT=8080
-    read_only: true
+      # Set ADMIN_PASSWORD in your shell or a .env file to enable the /admin editor.
+      # Leave unset to run read-only (admin disabled).
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
+      - ADMIN_TOKEN_SECRET=${ADMIN_TOKEN_SECRET:-}
+    # The admin editor writes to data/seed.json, so the data dir must be writable.
+    volumes:
+      - ./data:/app/data
     security_opt:
       - no-new-privileges:true
     cap_drop:

@@ -107,7 +107,7 @@ async function loadServices() {
 function renderList(services) {
   document.getElementById('list').innerHTML = services.map(function (s) {
     const color = CAT_COLOR[s.category] || '#556070';
-    const dir = 'https://www.openstreetmap.org/directions?to=' + s.latitude + ',' + s.longitude;
+    const dir = 'https://www.openstreetmap.org/?mlat=' + s.latitude + '&mlon=' + s.longitude + '#map=18/' + s.latitude + '/' + s.longitude;
     const tel = s.phone ? '<a class="btn secondary" href="tel:' + s.phone.replace(/[^0-9+]/g,'') + '">Call</a>' : '';
     return '<div class="card"><div class="row1"><h2 class="name">' + s.name + '</h2><span class="dist">' + fmtDist(s.distance_miles) + '</span></div>'
       + '<span class="cat" style="background:' + color + '">' + (CAT_LABEL[s.category] || s.category) + '</span>'

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin · Community Resource Directory</title>
+<style>
+  :root{--ink:#1a1a1a;--muted:#5a5a5a;--line:#e2e2e2;--bg:#fbfbfa;--accent:#1f5c46;--accent-bg:#e8f1ec;--card:#fff;--danger:#a3283a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.4}
+  header{padding:16px;border-bottom:1px solid var(--line);background:var(--card);display:flex;justify-content:space-between;align-items:center}
+  header h1{margin:0;font-size:18px;font-weight:650}
+  header a{color:var(--accent);font-size:14px;text-decoration:none}
+  main{max-width:640px;margin:0 auto;padding:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+  label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:10px 0 4px}
+  input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit}
+  textarea{min-height:64px;resize:vertical}
+  .row{display:flex;gap:10px}.row>div{flex:1}
+  button{min-height:44px;padding:10px 16px;border:1px solid var(--accent);border-radius:10px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+  button.ghost{background:#fff;color:var(--accent)}
+  button.danger{background:#fff;color:var(--danger);border-color:var(--danger)}
+  .msg{padding:10px;border-radius:8px;font-size:14px;margin:10px 0}
+  .msg.err{background:#fbe9ec;color:var(--danger)}.msg.ok{background:var(--accent-bg);color:var(--accent)}
+  .svc{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);gap:10px}
+  .svc:last-child{border-bottom:0}
+  .svc .n{font-weight:600}.svc .c{font-size:12px;color:var(--muted)}
+  .svc .acts{display:flex;gap:6px;flex:0 0 auto}
+  .svc .acts button{min-height:34px;padding:6px 12px;font-size:13px}
+  .hidden{display:none}
+  .note{font-size:13px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<header><h1>Directory admin</h1><a href="/">View site &rarr;</a></header>
+<main>
+  <div id="disabled" class="card hidden">
+    <strong>Admin is disabled.</strong>
+    <p class="note">Set the <code>ADMIN_PASSWORD</code> environment variable and restart to enable editing.</p>
+  </div>
+
+  <div id="login" class="card hidden">
+    <label for="pw">Admin password</label>
+    <input type="password" id="pw" autocomplete="current-password" />
+    <div id="loginmsg"></div>
+    <div style="margin-top:12px"><button id="loginbtn">Sign in</button></div>
+    <p class="note">Note: over plain HTTP this password is sent in the clear. If this instance is exposed to the internet, put it behind an HTTPS reverse proxy.</p>
+  </div>
+
+  <div id="panel" class="hidden">
+    <div class="card">
+      <strong id="formtitle">Add a service</strong>
+      <input type="hidden" id="editId" />
+      <label>Name *</label><input id="f-name" />
+      <div class="row"><div><label>Category</label><input id="f-category" list="cats" /><datalist id="cats"></datalist></div><div><label>Organization</label><input id="f-organization" /></div></div>
+      <label>Description</label><textarea id="f-description"></textarea>
+      <label>Address</label><input id="f-address" />
+      <div class="row"><div><label>Latitude *</label><input id="f-latitude" inputmode="decimal" /></div><div><label>Longitude *</label><input id="f-longitude" inputmode="decimal" /></div></div>
+      <div class="row"><div><label>Phone</label><input id="f-phone" /></div><div><label>Hours</label><input id="f-hours" /></div></div>
+      <label>Website</label><input id="f-website" />
+      <div id="formmsg"></div>
+      <div style="margin-top:12px;display:flex;gap:8px"><button id="savebtn">Save</button><button id="cancelbtn" class="ghost hidden">Cancel edit</button></div>
+    </div>
+    <div class="card">
+      <strong>Services (<span id="count">0</span>)</strong>
+      <div id="list"></div>
+    </div>
+  </div>
+</main>
+<script>
+let token = null;
+const $ = (id) => document.getElementById(id);
+const FIELDS = ['name','category','organization','description','address','latitude','longitude','phone','hours','website'];
+
+async function api(path, opts={}){
+  const headers = Object.assign({'content-type':'application/json'}, opts.headers||{});
+  if (token) headers['authorization'] = 'Bearer '+token;
+  const r = await fetch(path, Object.assign({}, opts, {headers}));
+  const body = await r.json().catch(()=>({}));
+  return { ok:r.ok, status:r.status, body };
+}
+function msg(el, text, kind){ el.innerHTML = text ? '<div class="msg '+kind+'">'+text+'</div>' : ''; }
+
+async function boot(){
+  const s = await api('/api/admin/status');
+  if (!s.body.enabled){ $('disabled').classList.remove('hidden'); return; }
+  $('login').classList.remove('hidden');
+}
+$('loginbtn').onclick = async () => {
+  const r = await api('/api/admin/login', {method:'POST', body:JSON.stringify({password:$('pw').value})});
+  if (!r.ok){ msg($('loginmsg'), r.body.error||'login failed', 'err'); return; }
+  token = r.body.token;
+  $('login').classList.add('hidden'); $('panel').classList.remove('hidden');
+  loadCats(); loadList();
+};
+$('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') $('loginbtn').click(); });
+
+async function loadCats(){
+  const r = await api('/api/categories');
+  $('cats').innerHTML = (r.body.categories||[]).map(c=>'<option value="'+c+'">').join('');
+}
+async function loadList(){
+  const r = await api('/api/services');
+  const svcs = r.body.services||[];
+  $('count').textContent = svcs.length;
+  $('list').innerHTML = svcs.map(s =>
+    '<div class="svc"><div><div class="n">'+esc(s.name)+'</div><div class="c">'+esc(s.category||'')+' · '+esc(s.address||'')+'</div></div>'
+    +'<div class="acts"><button class="ghost" data-edit="'+esc(s.id)+'">Edit</button><button class="danger" data-del="'+esc(s.id)+'">Delete</button></div></div>'
+  ).join('') || '<p class="note">No services yet.</p>';
+  $('list').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>startEdit(b.dataset.edit, svcs));
+  $('list').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>del(b.dataset.del));
+}
+function esc(s){ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function readForm(){ const o={}; FIELDS.forEach(f=>o[f]=$('f-'+f).value); return o; }
+function fillForm(s){ FIELDS.forEach(f=>$('f-'+f).value = s[f]??''); }
+function clearForm(){ FIELDS.forEach(f=>$('f-'+f).value=''); $('editId').value=''; $('formtitle').textContent='Add a service'; $('cancelbtn').classList.add('hidden'); msg($('formmsg'),'',''); }
+
+function startEdit(id, svcs){
+  const s = svcs.find(x=>x.id===id); if(!s) return;
+  fillForm(s); $('editId').value=id; $('formtitle').textContent='Edit: '+s.name; $('cancelbtn').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('cancelbtn').onclick = clearForm;
+
+$('savebtn').onclick = async () => {
+  const id = $('editId').value;
+  const rec = readForm();
+  const r = id
+    ? await api('/api/admin/services/'+encodeURIComponent(id), {method:'PUT', body:JSON.stringify(rec)})
+    : await api('/api/admin/services', {method:'POST', body:JSON.stringify(rec)});
+  if (!r.ok){ msg($('formmsg'), r.body.error||'save failed', 'err'); return; }
+  msg($('formmsg'), id?'Saved.':'Added.', 'ok');
+  clearForm(); loadCats(); loadList();
+};
+async function del(id){
+  if (!confirm('Delete this service?')) return;
+  const r = await api('/api/admin/services/'+encodeURIComponent(id), {method:'DELETE'});
+  if (r.ok) loadList();
+}
+boot();
+</script>
+</body>
+</html>

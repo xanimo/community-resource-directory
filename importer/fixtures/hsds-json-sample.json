@@ -1,0 +1,35 @@
+{
+  "services": [
+    {
+      "id": "svc-glide-meals",
+      "name": "GLIDE Daily Free Meals",
+      "description": "Three free meals a day, 364 days a year. No ID, no cost.",
+      "url": "https://www.glide.org",
+      "organization": { "id": "org-glide", "name": "GLIDE", "website": "https://www.glide.org" },
+      "phones": [{ "number": "415-674-6000" }],
+      "service_taxonomies": [{ "taxonomy_term": { "name": "Emergency Food" } }],
+      "service_at_locations": [
+        {
+          "id": "sal-1",
+          "location": {
+            "id": "loc-glide",
+            "latitude": 37.7847,
+            "longitude": -122.4130,
+            "addresses": [
+              { "address_1": "330 Ellis St", "city": "San Francisco", "state_province": "CA", "postal_code": "94102" }
+            ],
+            "regular_schedule": [
+              { "weekday": "Mo", "opens_at": "08:00:00", "closes_at": "09:00:00" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "svc-no-coords",
+      "name": "Phantom Service",
+      "description": "Has no location; should be dropped.",
+      "organization": { "id": "org-x", "name": "Nowhere Org" }
+    }
+  ]
+}

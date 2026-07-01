@@ -32,9 +32,32 @@ Then open http://localhost:8080.
 
 No admin/editing UI, no accounts, no multi-community hosting. Those come later. v0 exists to prove the shape: a community can stand up a working "find help near me" from a data file, with nothing proprietary underneath.
 
-## Adding your community's services
+## Loading your community's data
 
-Edit `data/seed.json`. Each service needs a name, category, address, `latitude`, `longitude`, and ideally phone/hours/website. Categories are listed under `meta.taxonomy`. Restart and your data is live.
+Two ways to get services in.
+
+**Import real HSDS / OpenReferral data** (recommended). If your community already publishes data in the [Human Service Data Specification](https://docs.openreferral.org) — from a 2-1-1, an Ohana instance, or any HSDS source — import it directly, no re-typing:
+
+    # HSDS 3.0 JSON (a dereferenced service list)
+    node importer/import-hsds.js path/to/hsds.json --write
+
+    # HSDS tabular data package (a folder of CSVs: organizations.csv,
+    # services.csv, locations.csv, service_at_location.csv, addresses.csv, ...)
+    node importer/import-hsds.js path/to/package_dir --write
+
+The importer joins the HSDS relational model (service → organization, service → location → address, with phones and schedules) and flattens it into what the app serves. Records without coordinates are skipped, since they can't be placed on a map or distance-sorted. Categories are inferred from HSDS taxonomy terms and text. Drop `--write` to preview on stdout instead of overwriting `data/seed.json`.
+
+**Or hand-edit** `data/seed.json` for a small directory: each service needs a name, category, address, `latitude`, `longitude`, and ideally phone/hours/website. Categories are listed under `meta.taxonomy`. Restart and your data is live.
+
+## Editing data in the browser (admin)
+
+There's a password-gated editor at `/admin` for adding, editing, and deleting services without touching files. It's **off by default** and only turns on when you set a password:
+
+    ADMIN_PASSWORD='choose-a-strong-password' node api/server.js
+
+Then open http://localhost:8080/admin and sign in. Edits are written straight to `data/seed.json` and take effect immediately. With Docker, set the variable in your shell or a `.env` file before `docker compose up` (the compose file reads `ADMIN_PASSWORD` and mounts `./data` writable so saves persist).
+
+**What the gate is and isn't.** The password is compared in constant time and exchanged for a short-lived signed token, so it's real access control for a self-hosted box. It is **not** a replacement for HTTPS: over plain `http://` the password crosses the wire in the clear. If you expose this instance beyond localhost, put it behind a reverse proxy with TLS. If `ADMIN_PASSWORD` is unset, the admin API is fully closed (fail-shut) and the site runs read-only.
 
 ## Stack
 
