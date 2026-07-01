@@ -3,19 +3,34 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="referrer" content="no-referrer" />
 <title>Find help near you</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
 <style>
   :root {
     --ink: #1a1a1a; --muted: #5a5a5a; --line: #e2e2e2; --bg: #fbfbfa;
     --accent: #1f5c46; --accent-bg: #e8f1ec; --card: #ffffff; --tap: 48px;
+    --alert: #8a5a00; --alert-bg: #fdf3e0;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink);
     font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.4; }
   header { padding: 16px 16px 12px; border-bottom: 1px solid var(--line); background: var(--card); position: sticky; top: 0; z-index: 5; }
+  .hrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
   header h1 { margin: 0; font-size: 20px; font-weight: 650; }
   header p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+  .lang { flex: 0 0 auto; display: flex; gap: 4px; }
+  .lang button { min-height: 32px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
+    background: #fff; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .kyr-toggle { margin-top: 10px; width: 100%; min-height: 44px; border: 1px solid var(--accent); border-radius: 10px;
+    background: var(--accent-bg); color: var(--accent); font-size: 15px; font-weight: 650; cursor: pointer; }
+  .kyr { display: none; background: var(--alert-bg); border-bottom: 1px solid var(--line); padding: 14px 16px; }
+  .kyr.open { display: block; }
+  .kyr h2 { margin: 0 0 8px; font-size: 16px; color: var(--alert); }
+  .kyr ul { margin: 0 0 8px; padding-left: 18px; }
+  .kyr li { font-size: 14px; margin: 4px 0; }
+  .kyr .disclaim { font-size: 12px; color: var(--muted); margin-top: 8px; }
   .controls { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; background: var(--card); border-bottom: 1px solid var(--line); }
   .chip { flex: 0 0 auto; min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px;
     background: #fff; font-size: 15px; font-weight: 500; color: var(--ink); cursor: pointer; }
@@ -32,6 +47,7 @@
     padding: 2px 8px; border-radius: 4px; margin: 6px 0 4px; color: #fff; }
   .desc { font-size: 14px; color: var(--muted); margin: 4px 0 8px; }
   .meta { font-size: 14px; color: var(--ink); }
+  .unverified { font-size: 12px; color: var(--alert); background: var(--alert-bg); border-radius: 4px; padding: 2px 6px; display: inline-block; margin-top: 6px; }
   .actions { display: flex; gap: 10px; margin-top: 10px; }
   .btn { flex: 1; min-height: var(--tap); display: flex; align-items: center; justify-content: center; gap: 6px;
     border: 1px solid var(--accent); border-radius: 10px; background: var(--accent); color: #fff;
@@ -43,9 +59,20 @@
 </head>
 <body>
 <header>
-  <h1>Find help near you</h1>
-  <p>Free food, shelter, showers, medical care, and legal aid.</p>
+  <div class="hrow">
+    <div>
+      <h1 id="t-title">Find help near you</h1>
+      <p id="t-subtitle">Free food, shelter, showers, medical care, and legal aid.</p>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="lang-en" aria-pressed="true" onclick="setLang('en')">EN</button>
+      <button id="lang-es" aria-pressed="false" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+  <button class="kyr-toggle" id="kyr-toggle" onclick="toggleKYR()">Know your rights</button>
 </header>
+
+<div class="kyr" id="kyr" role="region" aria-label="Know your rights"></div>
 
 <div class="controls" id="controls" role="group" aria-label="Filter by type of help"></div>
 <div id="map" role="img" aria-label="Map of nearby services"></div>
@@ -55,32 +82,119 @@
   <div id="list"></div>
 </main>
 
-<footer>
+<footer id="t-footer">
   A community resource directory. Free to use, free to host.<br />
-  No account, no questions. <a href="/api/services">Open data</a>.
+  No account, no tracking. <a href="/api/services">Open data</a>.
 </footer>
 
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
-const CAT_COLOR = { food:'#b8621b', housing:'#2f5fa8', hygiene:'#1d8a8a', medical:'#a3283a', legal:'#6b4ba3', technology:'#556070' };
-const CAT_LABEL = { food:'Food', housing:'Shelter', hygiene:'Showers', medical:'Medical', legal:'Legal', technology:'Computers' };
+// ---- i18n ----
+const I18N = {
+  en: {
+    title: 'Find help near you',
+    subtitle: 'Free food, shelter, showers, medical care, and legal aid.',
+    kyrBtn: 'Know your rights',
+    kyrHide: 'Hide',
+    kyrTitle: 'Know your rights',
+    kyrPoints: [
+      'You have the right to remain silent. You do not have to answer questions about where you were born or your immigration status.',
+      'You do not have to open the door. Ask officers to show a warrant signed by a judge, slipped under the door.',
+      'You have the right to speak to a lawyer. Do not sign anything you do not understand.',
+      'You can carry a "red card" that states your rights. Keep a family plan and emergency contacts.',
+    ],
+    kyrDisclaim: 'General information, not legal advice. Contact a rapid-response hotline or legal-aid organization below.',
+    all: 'All',
+    finding: 'Finding services near you...',
+    near: (n) => n + ' service' + (n === 1 ? '' : 's') + ' near you, closest first.',
+    error: 'Could not load services. Check your connection and try again.',
+    directions: 'Directions',
+    call: 'Call',
+    hours: 'Hours',
+    unverified: 'Unverified — confirm before you rely on it',
+    footer: 'A community resource directory. Free to use, free to host.<br>No account, no tracking. <a href="/api/services">Open data</a>.',
+  },
+  es: {
+    title: 'Encuentra ayuda cerca de ti',
+    subtitle: 'Comida, refugio, duchas, atención médica y ayuda legal gratis.',
+    kyrBtn: 'Conoce tus derechos',
+    kyrHide: 'Ocultar',
+    kyrTitle: 'Conoce tus derechos',
+    kyrPoints: [
+      'Tienes derecho a guardar silencio. No tienes que responder preguntas sobre dónde naciste ni tu estatus migratorio.',
+      'No tienes que abrir la puerta. Pide a los agentes que muestren una orden firmada por un juez, pasada por debajo de la puerta.',
+      'Tienes derecho a hablar con un abogado. No firmes nada que no entiendas.',
+      'Puedes portar una "tarjeta roja" que declara tus derechos. Ten un plan familiar y contactos de emergencia.',
+    ],
+    kyrDisclaim: 'Información general, no asesoría legal. Comunícate con una línea de respuesta rápida u organización de ayuda legal abajo.',
+    all: 'Todos',
+    finding: 'Buscando servicios cerca de ti...',
+    near: (n) => n + (n === 1 ? ' servicio' : ' servicios') + ' cerca de ti, del más cercano.',
+    error: 'No se pudieron cargar los servicios. Revisa tu conexión e intenta de nuevo.',
+    directions: 'Cómo llegar',
+    call: 'Llamar',
+    hours: 'Horario',
+    unverified: 'Sin verificar — confirma antes de depender de esto',
+    footer: 'Un directorio comunitario de recursos. Gratis de usar, gratis de alojar.<br>Sin cuenta, sin rastreo. <a href="/api/services">Datos abiertos</a>.',
+  },
+};
+const CAT_LABEL = {
+  en: { food:'Food', housing:'Shelter', hygiene:'Showers', medical:'Medical', legal:'Legal', technology:'Computers', legal_aid:'Legal aid', rapid_response:'Rapid response' },
+  es: { food:'Comida', housing:'Refugio', hygiene:'Duchas', medical:'Médico', legal:'Legal', technology:'Computadoras', legal_aid:'Ayuda legal', rapid_response:'Respuesta rápida' },
+};
+const CAT_COLOR = { food:'#b8621b', housing:'#2f5fa8', hygiene:'#1d8a8a', medical:'#a3283a', legal:'#6b4ba3', technology:'#556070', legal_aid:'#3d6b3d', rapid_response:'#a3283a' };
+
+let lang = (navigator.language || 'en').slice(0,2) === 'es' ? 'es' : 'en';
+function T() { return I18N[lang]; }
+
 const FALLBACK = { lat: 37.7793, lon: -122.4193 };
 let origin = Object.assign({}, FALLBACK);
-let activeCat = null, map, markers = [];
+let activeCat = null, map, markers = [], lastServices = [];
 
-function fmtDist(d) { return d < 0.1 ? 'here' : d + ' mi'; }
+function fmtDist(d) { return d < 0.1 ? (lang==='es'?'aquí':'here') : d + ' mi'; }
+
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.getElementById('lang-en').setAttribute('aria-pressed', l==='en');
+  document.getElementById('lang-es').setAttribute('aria-pressed', l==='es');
+  applyStaticText();
+  renderKYR();
+  loadCategories();
+  renderList(lastServices);
+  const st = document.getElementById('status');
+  if (lastServices.length) st.textContent = T().near(lastServices.length);
+}
+function applyStaticText() {
+  document.getElementById('t-title').textContent = T().title;
+  document.getElementById('t-subtitle').textContent = T().subtitle;
+  document.getElementById('t-footer').innerHTML = T().footer;
+  const open = document.getElementById('kyr').classList.contains('open');
+  document.getElementById('kyr-toggle').textContent = open ? T().kyrHide : T().kyrBtn;
+  document.title = T().title;
+}
+function renderKYR() {
+  document.getElementById('kyr').innerHTML =
+    '<h2>' + T().kyrTitle + '</h2><ul>' + T().kyrPoints.map((p)=>'<li>'+p+'</li>').join('') +
+    '</ul><div class="disclaim">' + T().kyrDisclaim + '</div>';
+}
+function toggleKYR() {
+  const k = document.getElementById('kyr');
+  k.classList.toggle('open');
+  document.getElementById('kyr-toggle').textContent = k.classList.contains('open') ? T().kyrHide : T().kyrBtn;
+}
 
 async function loadCategories() {
-  const el = document.getElementById('controls');
+  const el = document.getElementById('controls'); el.innerHTML = '';
   const all = document.createElement('button');
-  all.className = 'chip'; all.textContent = 'All'; all.setAttribute('aria-pressed', 'true');
+  all.className = 'chip'; all.textContent = T().all; all.setAttribute('aria-pressed', activeCat===null ? 'true':'false');
   all.onclick = () => setCat(null, all);
   el.appendChild(all);
   try {
     const r = await (await fetch('/api/categories')).json();
     r.categories.forEach(function (c) {
       const b = document.createElement('button');
-      b.className = 'chip'; b.textContent = CAT_LABEL[c] || c; b.setAttribute('aria-pressed', 'false');
+      b.className = 'chip'; b.textContent = (CAT_LABEL[lang][c] || c); b.setAttribute('aria-pressed', activeCat===c ? 'true':'false');
       b.onclick = () => setCat(c, b);
       el.appendChild(b);
     });
@@ -94,36 +208,39 @@ function setCat(cat, btn) {
 }
 async function loadServices() {
   const status = document.getElementById('status'), list = document.getElementById('list');
-  status.textContent = 'Finding services near you...'; list.innerHTML = '';
+  status.textContent = T().finding; list.innerHTML = '';
   try {
     const q = new URLSearchParams({ lat: origin.lat, lon: origin.lon });
     if (activeCat) q.set('category', activeCat);
     const r = await (await fetch('/api/nearby?' + q)).json();
-    const services = r.services;
-    status.textContent = services.length + ' service' + (services.length === 1 ? '' : 's') + ' near you, closest first.';
-    renderList(services); renderMarkers(services);
-  } catch (e) { status.textContent = 'Could not load services. Check your connection and try again.'; }
+    lastServices = r.services;
+    status.textContent = T().near(lastServices.length);
+    renderList(lastServices); renderMarkers(lastServices);
+  } catch (e) { status.textContent = T().error; }
 }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function renderList(services) {
-  document.getElementById('list').innerHTML = services.map(function (s) {
+  document.getElementById('list').innerHTML = (services||[]).map(function (s) {
     const color = CAT_COLOR[s.category] || '#556070';
     const dir = 'https://www.openstreetmap.org/?mlat=' + s.latitude + '&mlon=' + s.longitude + '#map=18/' + s.latitude + '/' + s.longitude;
-    const tel = s.phone ? '<a class="btn secondary" href="tel:' + s.phone.replace(/[^0-9+]/g,'') + '">Call</a>' : '';
-    return '<div class="card"><div class="row1"><h2 class="name">' + s.name + '</h2><span class="dist">' + fmtDist(s.distance_miles) + '</span></div>'
-      + '<span class="cat" style="background:' + color + '">' + (CAT_LABEL[s.category] || s.category) + '</span>'
-      + '<div class="desc">' + (s.description || '') + '</div>'
-      + '<div class="meta">' + (s.address || '') + (s.hours ? '<br><strong>Hours:</strong> ' + s.hours : '') + '</div>'
-      + '<div class="actions"><a class="btn" href="' + dir + '" target="_blank" rel="noopener">Directions</a>' + tel + '</div></div>';
+    const tel = s.phone ? '<a class="btn secondary" href="tel:' + s.phone.replace(/[^0-9+]/g,'') + '">' + T().call + '</a>' : '';
+    const unver = s.needs_verification ? '<div class="unverified">' + T().unverified + '</div>' : '';
+    return '<div class="card"><div class="row1"><h2 class="name">' + esc(s.name) + '</h2><span class="dist">' + fmtDist(s.distance_miles) + '</span></div>'
+      + '<span class="cat" style="background:' + color + '">' + (CAT_LABEL[lang][s.category] || esc(s.category)) + '</span>'
+      + '<div class="desc">' + esc(s.description || '') + '</div>'
+      + '<div class="meta">' + esc(s.address || '') + (s.hours ? '<br><strong>' + T().hours + ':</strong> ' + esc(s.hours) : '') + '</div>'
+      + unver
+      + '<div class="actions"><a class="btn" href="' + dir + '" target="_blank" rel="noopener">' + T().directions + '</a>' + tel + '</div></div>';
   }).join('');
 }
 function renderMarkers(services) {
   if (!map) return;
   markers.forEach((m) => m.remove()); markers = [];
-  services.forEach(function (s) {
+  (services||[]).forEach(function (s) {
     const el = document.createElement('div');
     el.style.cssText = 'width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);background:' + (CAT_COLOR[s.category] || '#556070');
     const m = new maplibregl.Marker({ element: el }).setLngLat([s.longitude, s.latitude])
-      .setPopup(new maplibregl.Popup({ offset: 14 }).setHTML('<strong>' + s.name + '</strong><br>' + fmtDist(s.distance_miles)))
+      .setPopup(new maplibregl.Popup({ offset: 14 }).setHTML('<strong>' + esc(s.name) + '</strong><br>' + fmtDist(s.distance_miles)))
       .addTo(map);
     markers.push(m);
   });
@@ -137,7 +254,7 @@ function initMap() {
   } catch (e) { document.getElementById('map').style.display = 'none'; loadServices(); }
 }
 function start() {
-  loadCategories(); initMap();
+  setLang(lang); initMap();
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function (pos) { origin = { lat: pos.coords.latitude, lon: pos.coords.longitude };

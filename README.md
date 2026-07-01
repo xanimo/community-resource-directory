@@ -32,6 +32,22 @@ Then open http://localhost:8080.
 
 No admin/editing UI, no accounts, no multi-community hosting. Those come later. v0 exists to prove the shape: a community can stand up a working "find help near me" from a data file, with nothing proprietary underneath.
 
+## For organizers
+
+This directory is built to be forked and run by communities, not just agencies.
+See **[MANIFESTO.md](MANIFESTO.md)** for the why (it's in the tradition of
+community mutual-aid and survival programs), and:
+
+- **Know Your Rights** panel built into the UI, with immigration-enforcement
+  guidance and a pointer to rapid-response and legal-aid resources.
+- **Rapid-response and legal-aid** categories, seeded with real Bay Area
+  hotlines and deportation-defense orgs (flagged for local verification).
+- **Bilingual (English / Spanish)** out of the box; the translation table is one
+  object in `web/index.html` that anyone can extend.
+- **Privacy by default** for at-risk users: no analytics, no trackers, no search
+  logs, and the recommended deploy turns off web-server access logs and strips
+  referrers. See **[deploy/PRIVACY.md](deploy/PRIVACY.md)**.
+
 ## Loading your community's data
 > **Data accuracy:** the bundled Bay Area seed was compiled from public sources and every entry is flagged `needs_verification`. Addresses, hours, and phone numbers change often — confirm each with the provider before relying on it. This mirrors how Link-SF operated: a human partner verified entries.
 

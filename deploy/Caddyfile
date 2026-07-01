@@ -11,13 +11,23 @@
 	encode zstd gzip
 	reverse_proxy {$UPSTREAM:directory:8080}
 
-	# Security headers. HSTS is commented out by default: only enable it once
-	# you are certain the domain will always be HTTPS (it is hard to undo).
+	# Privacy: do not write access logs. For a directory used by people at risk,
+	# a log of who looked up what — with IPs and timestamps — is itself a hazard.
+	# Caddy logs to stdout by default; this turns it off. (Errors still surface.)
+	log {
+		output discard
+	}
+
+	# Security / privacy headers.
 	header {
 		X-Content-Type-Options nosniff
 		X-Frame-Options DENY
-		Referrer-Policy no-referrer-when-downgrade
-		# Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		# Send no referrer at all, so outbound clicks (Directions, org sites)
+		# don't leak that the user came from this directory.
+		Referrer-Policy no-referrer
 		-Server
+		# HSTS is commented out by default: only enable once you're certain the
+		# domain will always be HTTPS (it's hard to undo).
+		# Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	}
 }

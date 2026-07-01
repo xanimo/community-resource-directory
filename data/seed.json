@@ -8,7 +8,9 @@
       "hygiene",
       "medical",
       "legal",
-      "technology"
+      "technology",
+      "legal_aid",
+      "rapid_response"
     ]
   },
   "services": [
@@ -333,6 +335,93 @@
       "phone": "415-382-3363",
       "hours": "Call for intake",
       "website": "https://hbofm.org",
+      "needs_verification": true
+    },
+    {
+      "id": "sf-rapid-response-hotline",
+      "name": "SF Rapid Response Hotline",
+      "organization": "San Francisco Immigrant Legal & Education Network (SFILEN)",
+      "category": "rapid_response",
+      "description": "24-hour hotline to report ICE enforcement, verify activity, and activate legal support. English, Spanish, Cantonese.",
+      "address": "San Francisco, CA (hotline, citywide)",
+      "latitude": 37.7793,
+      "longitude": -122.4193,
+      "phone": "415-200-1548",
+      "hours": "24 hours, every day",
+      "website": "https://sfildc.org/rapid-response",
+      "needs_verification": true,
+      "verification_note": "Hotline number; not a walk-in address."
+    },
+    {
+      "id": "marin-rapid-response-network",
+      "name": "Marin Rapid Response Network",
+      "organization": "Marin RRN",
+      "category": "rapid_response",
+      "description": "Marin County hotline to report and respond to immigration enforcement activity.",
+      "address": "Marin County, CA (hotline)",
+      "latitude": 38.0834,
+      "longitude": -122.7633,
+      "phone": "415-991-4545",
+      "hours": "Call for hours",
+      "website": "https://www.ccijustice.org/carrn",
+      "needs_verification": true,
+      "verification_note": "Hotline number; countywide."
+    },
+    {
+      "id": "acilep-hotline-alameda-county",
+      "name": "ACILEP Hotline (Alameda County)",
+      "organization": "Alameda County Immigration Legal & Education Partnership",
+      "category": "rapid_response",
+      "description": "Rapid-response hotline for urgent ICE activity or detentions; mobilizes legal support and advocacy in Alameda County.",
+      "address": "Alameda County, CA (hotline)",
+      "latitude": 37.8044,
+      "longitude": -122.2712,
+      "phone": "510-241-4011",
+      "hours": "6am-6pm",
+      "website": "https://www.acilep.org",
+      "needs_verification": true,
+      "verification_note": "Hotline number; countywide."
+    },
+    {
+      "id": "centro-legal-de-la-raza",
+      "name": "Centro Legal de la Raza",
+      "organization": "Centro Legal de la Raza",
+      "category": "legal_aid",
+      "description": "Free immigration legal services, removal/deportation defense, and know-your-rights presentations. Serving Oakland since 1969.",
+      "address": "3400 E 12th St, Oakland, CA 94601",
+      "latitude": 37.7857,
+      "longitude": -122.227,
+      "phone": "510-437-1554",
+      "hours": "Mon-Fri, call for hours",
+      "website": "https://www.centrolegal.org",
+      "needs_verification": true
+    },
+    {
+      "id": "la-raza-centro-legal",
+      "name": "La Raza Centro Legal",
+      "organization": "La Raza Centro Legal",
+      "category": "legal_aid",
+      "description": "Free immigration removal-defense legal services for Bay Area residents in removal proceedings; consultations for detained and non-detained people.",
+      "address": "474 Valencia St, San Francisco, CA 94103",
+      "latitude": 37.7663,
+      "longitude": -122.4218,
+      "phone": "415-575-3500",
+      "hours": "Mon-Fri, call front desk",
+      "website": "https://www.lrcl.org",
+      "needs_verification": true
+    },
+    {
+      "id": "bay-area-legal-aid",
+      "name": "Bay Area Legal Aid",
+      "organization": "Bay Area Legal Aid (BALA)",
+      "category": "legal_aid",
+      "description": "One of the largest legal-aid providers in the Bay Area (seven counties); immigration practice focused on humanitarian and vulnerable cases.",
+      "address": "1735 Telegraph Ave, Oakland, CA 94612",
+      "latitude": 37.8073,
+      "longitude": -122.268,
+      "phone": "510-663-4744",
+      "hours": "Mon-Fri, call for hours",
+      "website": "https://baylegal.org",
       "needs_verification": true
     }
   ]

@@ -14,6 +14,10 @@ export const CATEGORY_TO_OE = {
   medical:    { code: '1206', name: 'Medical Care',    taxonomy: 'Open Eligibility', parent_id: '1106' },
   hygiene:    { code: '1218', name: 'Personal Hygiene', taxonomy: 'Open Eligibility', parent_id: '1206' },
   legal:      { code: '1111', name: 'Legal',           taxonomy: 'Open Eligibility', parent_id: '' },
+  legal_aid:  { code: '1375', name: 'Advocacy & Legal Aid', taxonomy: 'Open Eligibility', parent_id: '1111' },
+  // Rapid-response / immigration-enforcement hotlines have no Open Eligibility
+  // equivalent; keep local rather than force a bad fit.
+  rapid_response: { code: 'rapid_response', name: 'Rapid Response', taxonomy: 'local', parent_id: '' },
   // No suitable Open Eligibility parent for general tech/computer access; keep local.
   technology: { code: 'technology', name: 'Technology Access', taxonomy: 'local', parent_id: '' },
 };
@@ -21,6 +25,7 @@ export const CATEGORY_TO_OE = {
 // Open Eligibility parent terms we should also emit so exported taxonomy_terms
 // form a valid tree (a child references a parent_id that must resolve).
 export const OE_PARENTS = {
+  '1111': { code: '1111', name: 'Legal',       taxonomy: 'Open Eligibility', parent_id: '' },
   '1103': { code: '1103', name: 'Housing',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1106': { code: '1106', name: 'Health',      taxonomy: 'Open Eligibility', parent_id: '' },
   '1206': { code: '1206', name: 'Medical Care', taxonomy: 'Open Eligibility', parent_id: '1106' },
