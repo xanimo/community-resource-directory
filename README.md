@@ -33,6 +33,8 @@ Then open http://localhost:8080.
 No admin/editing UI, no accounts, no multi-community hosting. Those come later. v0 exists to prove the shape: a community can stand up a working "find help near me" from a data file, with nothing proprietary underneath.
 
 ## Loading your community's data
+> **Data accuracy:** the bundled Bay Area seed was compiled from public sources and every entry is flagged `needs_verification`. Addresses, hours, and phone numbers change often — confirm each with the provider before relying on it. This mirrors how Link-SF operated: a human partner verified entries.
+
 
 Two ways to get services in.
 
