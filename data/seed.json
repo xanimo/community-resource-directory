@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "spec": "HSDS-inspired (OpenReferral) minimal profile",
+    "note": "v0 seed. Real SF services in the Link-SF / Ohana lineage. Coordinates approximate.",
+    "taxonomy": ["food", "housing", "hygiene", "medical", "legal", "technology"]
+  },
+  "services": [
+    {
+      "id": "st-anthony-dining",
+      "name": "St. Anthony's Dining Room",
+      "organization": "St. Anthony Foundation",
+      "category": "food",
+      "description": "Free hot meals served daily, no questions asked. Seniors and families 10:00-11:45am; all welcome 11:30am-1:30pm.",
+      "address": "121 Golden Gate Ave, San Francisco, CA 94102",
+      "latitude": 37.7827,
+      "longitude": -122.4133,
+      "phone": "415-592-2710",
+      "hours": "Daily 10:00am-1:30pm",
+      "website": "https://www.stanthonysf.org"
+    },
+    {
+      "id": "glide-meals",
+      "name": "GLIDE Daily Free Meals",
+      "organization": "GLIDE",
+      "category": "food",
+      "description": "Three free meals a day, 364 days a year. No ID, no cost, no questions.",
+      "address": "330 Ellis St, San Francisco, CA 94102",
+      "latitude": 37.7847,
+      "longitude": -122.4130,
+      "phone": "415-674-6000",
+      "hours": "Breakfast 8:00-9:00am, Lunch 12:00-1:30pm, Dinner 4:00-5:30pm",
+      "website": "https://www.glide.org"
+    },
+    {
+      "id": "lava-mae",
+      "name": "LavaMae\u02e3 Mobile Showers",
+      "organization": "LavaMae\u02e3",
+      "category": "hygiene",
+      "description": "Free mobile showers and hygiene services. Schedule and locations vary by day \u2014 check website.",
+      "address": "Varies (mobile), Tenderloin, San Francisco, CA",
+      "latitude": 37.7841,
+      "longitude": -122.4150,
+      "phone": "",
+      "hours": "See website for daily schedule",
+      "website": "https://lavamae.org"
+    },
+    {
+      "id": "tenderloin-tech-lab",
+      "name": "Tenderloin Technology Lab",
+      "organization": "St. Anthony Foundation",
+      "category": "technology",
+      "description": "Free computer access and digital literacy education. The neighborhood's only free technology center.",
+      "address": "121 Golden Gate Ave, San Francisco, CA 94102",
+      "latitude": 37.7828,
+      "longitude": -122.4134,
+      "phone": "415-592-2740",
+      "hours": "Mon-Fri, see website",
+      "website": "https://www.stanthonysf.org/services/technology-access"
+    },
+    {
+      "id": "hospitality-house",
+      "name": "Hospitality House Shelter",
+      "organization": "Central City Hospitality House",
+      "category": "housing",
+      "description": "Free emergency shelter and drop-in services for adults experiencing homelessness.",
+      "address": "146 Leavenworth St, San Francisco, CA 94102",
+      "latitude": 37.7823,
+      "longitude": -122.4143,
+      "phone": "415-749-2100",
+      "hours": "Drop-in Mon-Fri 9:00am-1:00pm",
+      "website": "https://www.hospitalityhouse.org"
+    },
+    {
+      "id": "hap-legal",
+      "name": "Homeless Advocacy Project",
+      "organization": "Justice & Diversity Center (SF Bar)",
+      "category": "legal",
+      "description": "Free legal advice, advocacy, and services information for people who are homeless or low-income.",
+      "address": "1035 Market St, San Francisco, CA 94103",
+      "latitude": 37.7809,
+      "longitude": -122.4103,
+      "phone": "415-575-3130",
+      "hours": "Mon-Fri, appointments recommended",
+      "website": "https://www.sfbar.org/jdc"
+    },
+    {
+      "id": "healthright360",
+      "name": "HealthRIGHT 360 Clinic",
+      "organization": "HealthRIGHT 360",
+      "category": "medical",
+      "description": "Free and low-cost integrated medical, dental, and behavioral health care. Sliding scale, no one turned away.",
+      "address": "1563 Mission St, San Francisco, CA 94103",
+      "latitude": 37.7727,
+      "longitude": -122.4188,
+      "phone": "415-762-3700",
+      "hours": "Mon-Fri 8:00am-5:00pm",
+      "website": "https://www.healthright360.org"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+services:
+  directory:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
