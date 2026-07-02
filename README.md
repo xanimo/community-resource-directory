@@ -2,7 +2,7 @@
 
 A mobile-first "find help near you" directory — food, shelter, showers, medical
 care, legal aid, immigration rapid-response, LGBTQ+ services, harm reduction,
-and mutual-aid meals — that a community can stand up
+mutual-aid meals, community gardens, co-ops, and infoshops — that a community can stand up
 in an afternoon and maintain itself. **Free to use, free to host, no account, no
 tracking.**
 

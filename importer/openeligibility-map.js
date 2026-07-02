@@ -10,6 +10,7 @@
 // local category -> Open Eligibility term (or a local fallback)
 export const CATEGORY_TO_OE = {
   food:       { code: '1102', name: 'Food',            taxonomy: 'Open Eligibility', parent_id: '' },
+  garden:     { code: '1127', name: 'Community Gardens', taxonomy: 'Open Eligibility', parent_id: '1102' },
   housing:    { code: '1135', name: 'Emergency Shelter', taxonomy: 'Open Eligibility', parent_id: '1103' },
   medical:    { code: '1206', name: 'Medical Care',    taxonomy: 'Open Eligibility', parent_id: '1106' },
   hygiene:    { code: '1218', name: 'Personal Hygiene', taxonomy: 'Open Eligibility', parent_id: '1206' },
@@ -24,6 +25,8 @@ export const CATEGORY_TO_OE = {
   // LGBTQ+ is an audience/population, not a service type — HSDS models that via
   // attributes, not the service taxonomy. Keep as a local findability tag.
   lgbtq: { code: 'lgbtq', name: 'LGBTQ+', taxonomy: 'local', parent_id: '' },
+  // Infoshops, co-ops, and community commons have no Open Eligibility term; local.
+  community_space: { code: 'community_space', name: 'Community Space', taxonomy: 'local', parent_id: '' },
   // No suitable Open Eligibility parent for general tech/computer access; keep local.
   technology: { code: 'technology', name: 'Technology Access', taxonomy: 'local', parent_id: '' },
 };
@@ -32,6 +35,7 @@ export const CATEGORY_TO_OE = {
 // form a valid tree (a child references a parent_id that must resolve).
 export const OE_PARENTS = {
   '1111': { code: '1111', name: 'Legal',       taxonomy: 'Open Eligibility', parent_id: '' },
+  '1102': { code: '1102', name: 'Food',        taxonomy: 'Open Eligibility', parent_id: '' },
   '1103': { code: '1103', name: 'Housing',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1106': { code: '1106', name: 'Health',      taxonomy: 'Open Eligibility', parent_id: '' },
   '1206': { code: '1206', name: 'Medical Care', taxonomy: 'Open Eligibility', parent_id: '1106' },
