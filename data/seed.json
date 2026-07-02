@@ -17,7 +17,11 @@
       "community_space",
       "csa",
       "dental",
-      "transportation"
+      "transportation",
+      "domestic_violence",
+      "mental_health_crisis",
+      "sexual_assault",
+      "reentry"
     ]
   },
   "services": []

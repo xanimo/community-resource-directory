@@ -23,14 +23,6 @@
   .lang button { min-height: 32px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px;
     background: #fff; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
   .lang button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .kyr-toggle { margin-top: 10px; width: 100%; min-height: 44px; border: 1px solid var(--accent); border-radius: 10px;
-    background: var(--accent-bg); color: var(--accent); font-size: 15px; font-weight: 650; cursor: pointer; }
-  .kyr { display: none; background: var(--alert-bg); border-bottom: 1px solid var(--line); padding: 14px 16px; }
-  .kyr.open { display: block; }
-  .kyr h2 { margin: 0 0 8px; font-size: 16px; color: var(--alert); }
-  .kyr ul { margin: 0 0 8px; padding-left: 18px; }
-  .kyr li { font-size: 14px; margin: 4px 0; }
-  .kyr .disclaim { font-size: 12px; color: var(--muted); margin-top: 8px; }
   .controls { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; background: var(--card); border-bottom: 1px solid var(--line); }
   .chip { flex: 0 0 auto; min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px;
     background: #fff; font-size: 15px; font-weight: 500; color: var(--ink); cursor: pointer; }
@@ -69,10 +61,7 @@
       <button id="lang-es" aria-pressed="false" onclick="setLang('es')">ES</button>
     </div>
   </div>
-  <button class="kyr-toggle" id="kyr-toggle" onclick="toggleKYR()">Know your rights</button>
 </header>
-
-<div class="kyr" id="kyr" role="region" aria-label="Know your rights"></div>
 
 <div class="controls" id="controls" role="group" aria-label="Filter by type of help"></div>
 <div id="map" role="img" aria-label="Map of nearby services"></div>
@@ -94,16 +83,6 @@ const I18N = {
   en: {
     title: 'Find help near you',
     subtitle: 'Free food, shelter, showers, medical care, and legal aid.',
-    kyrBtn: 'Know your rights',
-    kyrHide: 'Hide',
-    kyrTitle: 'Know your rights',
-    kyrPoints: [
-      'You have the right to remain silent. You do not have to answer questions about where you were born or your immigration status.',
-      'You do not have to open the door. Ask officers to show a warrant signed by a judge, slipped under the door.',
-      'You have the right to speak to a lawyer. Do not sign anything you do not understand.',
-      'You can carry a "red card" that states your rights. Keep a family plan and emergency contacts.',
-    ],
-    kyrDisclaim: 'General information, not legal advice. Contact a rapid-response hotline or legal-aid organization below.',
     all: 'All',
     finding: 'Finding services near you...',
     near: (n) => n + ' service' + (n === 1 ? '' : 's') + ' near you, closest first.',
@@ -117,16 +96,6 @@ const I18N = {
   es: {
     title: 'Encuentra ayuda cerca de ti',
     subtitle: 'Comida, refugio, duchas, atención médica y ayuda legal gratis.',
-    kyrBtn: 'Conoce tus derechos',
-    kyrHide: 'Ocultar',
-    kyrTitle: 'Conoce tus derechos',
-    kyrPoints: [
-      'Tienes derecho a guardar silencio. No tienes que responder preguntas sobre dónde naciste ni tu estatus migratorio.',
-      'No tienes que abrir la puerta. Pide a los agentes que muestren una orden firmada por un juez, pasada por debajo de la puerta.',
-      'Tienes derecho a hablar con un abogado. No firmes nada que no entiendas.',
-      'Puedes portar una "tarjeta roja" que declara tus derechos. Ten un plan familiar y contactos de emergencia.',
-    ],
-    kyrDisclaim: 'Información general, no asesoría legal. Comunícate con una línea de respuesta rápida u organización de ayuda legal abajo.',
     all: 'Todos',
     finding: 'Buscando servicios cerca de ti...',
     near: (n) => n + (n === 1 ? ' servicio' : ' servicios') + ' cerca de ti, del más cercano.',
@@ -139,10 +108,10 @@ const I18N = {
   },
 };
 const CAT_LABEL = {
-  en: { food:'Food', housing:'Shelter', hygiene:'Showers', medical:'Medical', legal:'Legal', technology:'Computers', legal_aid:'Legal aid', rapid_response:'Rapid response', lgbtq:'LGBTQ+', harm_reduction:'Harm reduction', garden:'Gardens', community_space:'Community space', csa:'Farm shares', dental:'Dental', transportation:'Rides' },
-  es: { food:'Comida', housing:'Refugio', hygiene:'Duchas', medical:'Médico', legal:'Legal', technology:'Computadoras', legal_aid:'Ayuda legal', rapid_response:'Respuesta rápida', lgbtq:'LGBTQ+', harm_reduction:'Reducción de daños', garden:'Huertos', community_space:'Espacio comunitario', csa:'Cajas de granja', dental:'Dental', transportation:'Transporte' },
+  en: { food:'Food', housing:'Shelter', hygiene:'Showers', medical:'Medical', legal:'Legal', technology:'Computers', legal_aid:'Legal aid', rapid_response:'Rapid response', lgbtq:'LGBTQ+', harm_reduction:'Harm reduction', garden:'Gardens', community_space:'Community space', csa:'Farm shares', dental:'Dental', transportation:'Rides', domestic_violence:'DV / abuse', mental_health_crisis:'Mental health', sexual_assault:'Sexual assault', reentry:'Reentry' },
+  es: { food:'Comida', housing:'Refugio', hygiene:'Duchas', medical:'Médico', legal:'Legal', technology:'Computadoras', legal_aid:'Ayuda legal', rapid_response:'Respuesta rápida', lgbtq:'LGBTQ+', harm_reduction:'Reducción de daños', garden:'Huertos', community_space:'Espacio comunitario', csa:'Cajas de granja', dental:'Dental', transportation:'Transporte', domestic_violence:'Violencia doméstica', mental_health_crisis:'Salud mental', sexual_assault:'Agresión sexual', reentry:'Reintegración' },
 };
-const CAT_COLOR = { food:'#b8621b', housing:'#2f5fa8', hygiene:'#1d8a8a', medical:'#a3283a', legal:'#6b4ba3', technology:'#556070', legal_aid:'#3d6b3d', rapid_response:'#a3283a', lgbtq:'#7d3f9e', harm_reduction:'#0f7a6b', garden:'#5a8a2b', community_space:'#8a6a1b', csa:'#7a9a3b', dental:'#2a7a8a', transportation:'#4a6a9a' };
+const CAT_COLOR = { food:'#b8621b', housing:'#2f5fa8', hygiene:'#1d8a8a', medical:'#a3283a', legal:'#6b4ba3', technology:'#556070', legal_aid:'#3d6b3d', rapid_response:'#a3283a', lgbtq:'#7d3f9e', harm_reduction:'#0f7a6b', garden:'#5a8a2b', community_space:'#8a6a1b', csa:'#7a9a3b', dental:'#2a7a8a', transportation:'#4a6a9a', domestic_violence:'#a3283a', mental_health_crisis:'#8a3a6a', sexual_assault:'#a3283a', reentry:'#5a5a8a' };
 
 let lang = (navigator.language || 'en').slice(0,2) === 'es' ? 'es' : 'en';
 function T() { return I18N[lang]; }
@@ -162,7 +131,6 @@ function setLang(l) {
   document.getElementById('lang-en').setAttribute('aria-pressed', l==='en');
   document.getElementById('lang-es').setAttribute('aria-pressed', l==='es');
   applyStaticText();
-  renderKYR();
   loadCategories();
   renderList(lastServices);
   const st = document.getElementById('status');
@@ -172,19 +140,7 @@ function applyStaticText() {
   document.getElementById('t-title').textContent = T().title;
   document.getElementById('t-subtitle').textContent = T().subtitle;
   document.getElementById('t-footer').innerHTML = T().footer;
-  const open = document.getElementById('kyr').classList.contains('open');
-  document.getElementById('kyr-toggle').textContent = open ? T().kyrHide : T().kyrBtn;
   document.title = T().title;
-}
-function renderKYR() {
-  document.getElementById('kyr').innerHTML =
-    '<h2>' + T().kyrTitle + '</h2><ul>' + T().kyrPoints.map((p)=>'<li>'+p+'</li>').join('') +
-    '</ul><div class="disclaim">' + T().kyrDisclaim + '</div>';
-}
-function toggleKYR() {
-  const k = document.getElementById('kyr');
-  k.classList.toggle('open');
-  document.getElementById('kyr-toggle').textContent = k.classList.contains('open') ? T().kyrHide : T().kyrBtn;
 }
 
 async function loadCategories() {

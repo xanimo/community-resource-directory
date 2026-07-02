@@ -18,6 +18,13 @@ export const CATEGORY_TO_OE = {
   transportation: { code: '1175', name: 'Transportation', taxonomy: 'Open Eligibility', parent_id: '1105' },
   // CSA / farm shares are a purchasing model, not a standard service term; local.
   csa: { code: 'csa', name: 'Farm Share (CSA)', taxonomy: 'local', parent_id: '' },
+  // Domestic violence and sexual assault map to Open Eligibility "Help Escape
+  // Violence" under Immediate Safety / Emergency.
+  domestic_violence: { code: '1124', name: 'Help Escape Violence', taxonomy: 'Open Eligibility', parent_id: '1123' },
+  sexual_assault:    { code: '1124', name: 'Help Escape Violence', taxonomy: 'Open Eligibility', parent_id: '1123' },
+  // Open Eligibility has no dedicated crisis-line or reentry term; keep local.
+  mental_health_crisis: { code: 'mental_health_crisis', name: 'Mental Health Crisis', taxonomy: 'local', parent_id: '' },
+  reentry: { code: 'reentry', name: 'Reentry', taxonomy: 'local', parent_id: '' },
   legal:      { code: '1111', name: 'Legal',           taxonomy: 'Open Eligibility', parent_id: '' },
   legal_aid:  { code: '1375', name: 'Advocacy & Legal Aid', taxonomy: 'Open Eligibility', parent_id: '1111' },
   // Rapid-response / immigration-enforcement hotlines have no Open Eligibility
@@ -40,6 +47,8 @@ export const CATEGORY_TO_OE = {
 export const OE_PARENTS = {
   '1111': { code: '1111', name: 'Legal',       taxonomy: 'Open Eligibility', parent_id: '' },
   '1102': { code: '1102', name: 'Food',        taxonomy: 'Open Eligibility', parent_id: '' },
+  '1101': { code: '1101', name: 'Emergency',   taxonomy: 'Open Eligibility', parent_id: '' },
+  '1123': { code: '1123', name: 'Immediate Safety', taxonomy: 'Open Eligibility', parent_id: '1101' },
   '1105': { code: '1105', name: 'Transit',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1103': { code: '1103', name: 'Housing',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1106': { code: '1106', name: 'Health',      taxonomy: 'Open Eligibility', parent_id: '' },
