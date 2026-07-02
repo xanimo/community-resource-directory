@@ -14,6 +14,10 @@ export const CATEGORY_TO_OE = {
   housing:    { code: '1135', name: 'Emergency Shelter', taxonomy: 'Open Eligibility', parent_id: '1103' },
   medical:    { code: '1206', name: 'Medical Care',    taxonomy: 'Open Eligibility', parent_id: '1106' },
   hygiene:    { code: '1218', name: 'Personal Hygiene', taxonomy: 'Open Eligibility', parent_id: '1206' },
+  dental:     { code: '1184', name: 'Dental Care',     taxonomy: 'Open Eligibility', parent_id: '1106' },
+  transportation: { code: '1175', name: 'Transportation', taxonomy: 'Open Eligibility', parent_id: '1105' },
+  // CSA / farm shares are a purchasing model, not a standard service term; local.
+  csa: { code: 'csa', name: 'Farm Share (CSA)', taxonomy: 'local', parent_id: '' },
   legal:      { code: '1111', name: 'Legal',           taxonomy: 'Open Eligibility', parent_id: '' },
   legal_aid:  { code: '1375', name: 'Advocacy & Legal Aid', taxonomy: 'Open Eligibility', parent_id: '1111' },
   // Rapid-response / immigration-enforcement hotlines have no Open Eligibility
@@ -36,6 +40,7 @@ export const CATEGORY_TO_OE = {
 export const OE_PARENTS = {
   '1111': { code: '1111', name: 'Legal',       taxonomy: 'Open Eligibility', parent_id: '' },
   '1102': { code: '1102', name: 'Food',        taxonomy: 'Open Eligibility', parent_id: '' },
+  '1105': { code: '1105', name: 'Transit',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1103': { code: '1103', name: 'Housing',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1106': { code: '1106', name: 'Health',      taxonomy: 'Open Eligibility', parent_id: '' },
   '1206': { code: '1206', name: 'Medical Care', taxonomy: 'Open Eligibility', parent_id: '1106' },
