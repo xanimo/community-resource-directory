@@ -1,0 +1,10 @@
+{
+  "name": "San Francisco Bay Area",
+  "tagline": "Find help near you",
+  "center": { "lat": 37.7793, "lon": -122.4193 },
+  "zoom": 9,
+  "fallback": { "lat": 37.7793, "lon": -122.4193 },
+  "default_language": "en",
+  "languages": ["en", "es"],
+  "categories": []
+}

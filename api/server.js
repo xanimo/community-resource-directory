@@ -13,6 +13,7 @@ import { ADMIN_ENABLED, checkPassword, issueToken, verifyToken, bearerFrom } fro
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SEED_PATH = join(ROOT, 'data', 'seed.json');
+const PLACE_PATH = join(ROOT, 'data', 'place.json');
 const PORT = process.env.PORT || 8080;
 
 const COLS = ['id','name','organization','category','description','address','latitude','longitude','phone','hours','website'];
@@ -29,6 +30,20 @@ db.exec(`
 
 let seed = JSON.parse(readFileSync(SEED_PATH, 'utf8'));
 let CATEGORIES = seed.meta?.taxonomy ?? [];
+
+// Place config: the one file that makes an instance local. Falls back to a
+// neutral whole-country view if absent, so the app still runs unconfigured.
+const DEFAULT_PLACE = { name:'Your Community', tagline:'Find help near you',
+  center:{lat:39.8283,lon:-98.5795}, zoom:4, fallback:{lat:39.8283,lon:-98.5795},
+  default_language:'en', languages:['en','es'], categories:[] };
+let place;
+try { place = { ...DEFAULT_PLACE, ...JSON.parse(readFileSync(PLACE_PATH, 'utf8')) }; }
+catch { place = DEFAULT_PLACE; }
+// A place may pin a subset of categories; otherwise show whatever the data has.
+function visibleCategories(){
+  const pinned = Array.isArray(place.categories) ? place.categories.filter(Boolean) : [];
+  return pinned.length ? pinned : CATEGORIES;
+}
 
 const insertStmt = db.prepare(`INSERT INTO services (${COLS.join(',')}) VALUES (${COLS.map(()=>'?').join(',')})`);
 function rowVals(s){ return [s.id, s.name, s.organization??'', s.category??'', s.description??'', s.address??'', s.latitude??null, s.longitude??null, s.phone??'', s.hours??'', s.website??'']; }
@@ -90,7 +105,9 @@ const server = createServer(async (req, res) => {
   const method = req.method || 'GET';
 
   // ---------- public read API ----------
-  if (path === '/api/categories') return json(res, 200, { categories: CATEGORIES });
+  if (path === '/api/place') return json(res, 200, { place });
+
+  if (path === '/api/categories') return json(res, 200, { categories: visibleCategories() });
 
   if (path === '/api/services' && method === 'GET') {
     const cat = url.searchParams.get('category');

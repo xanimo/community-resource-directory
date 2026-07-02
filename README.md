@@ -26,7 +26,12 @@ just agencies.
 
 ## Quick start
 
-With Docker:
+This ships **blank** — a working app with no data, ready to become yours. Point
+it at your town:
+
+    node bin/bootstrap.js --name "Your County" --lat 38.29 --lon -122.46 --zoom 10
+
+Then run it, with Docker:
 
     docker compose up
 
@@ -34,8 +39,10 @@ Or with Node 22+ directly:
 
     node api/server.js
 
-Then open http://localhost:8080. To go live on a real domain with HTTPS, see
-[Deploying](#deploying), below.
+Then open http://localhost:8080. To see a fully populated instance first, load
+the bundled Bay Area example with `node bin/bootstrap.js --example bay-area`.
+Full setup guide: [SETUP.md](SETUP.md). To go live on a real domain with HTTPS,
+see [Deploying](#deploying), below.
 
 ## What it does
 

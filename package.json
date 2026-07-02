@@ -1,6 +1,6 @@
 {
   "name": "community-resource-directory",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "A self-hostable, mobile-first directory that connects people to nearby community services. Free to use, free to host.",
   "type": "module",
   "engines": {
@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node api/server.js",
     "import": "node importer/import-hsds.js",
-    "export": "node importer/export-hsds.js"
+    "export": "node importer/export-hsds.js",
+    "bootstrap": "node bin/bootstrap.js"
   },
   "license": "MIT"
 }

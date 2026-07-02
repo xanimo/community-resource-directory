@@ -147,8 +147,11 @@ const CAT_COLOR = { food:'#b8621b', housing:'#2f5fa8', hygiene:'#1d8a8a', medica
 let lang = (navigator.language || 'en').slice(0,2) === 'es' ? 'es' : 'en';
 function T() { return I18N[lang]; }
 
-const FALLBACK = { lat: 37.7793, lon: -122.4193 };
-let origin = Object.assign({}, FALLBACK);
+// Place config is fetched from /api/place at startup; these are safe defaults
+// (whole-US view) until it loads, so the app never hard-fails.
+let PLACE = { name:'Your Community', tagline:'Find help near you',
+  center:{lat:39.8283,lon:-98.5795}, zoom:4, fallback:{lat:39.8283,lon:-98.5795} };
+let origin = { lat: PLACE.fallback.lat, lon: PLACE.fallback.lon };
 let activeCat = null, map, markers = [], lastServices = [];
 
 function fmtDist(d) { return d < 0.1 ? (lang==='es'?'aquí':'here') : d + ' mi'; }
@@ -248,19 +251,43 @@ function renderMarkers(services) {
 function initMap() {
   try {
     map = new maplibregl.Map({ container: 'map', style: 'https://tiles.openfreemap.org/styles/liberty',
-      center: [origin.lon, origin.lat], zoom: 13.5 });
+      center: [PLACE.center.lon, PLACE.center.lat], zoom: PLACE.zoom });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     map.on('load', () => loadServices());
   } catch (e) { document.getElementById('map').style.display = 'none'; loadServices(); }
 }
+async function loadPlace() {
+  try {
+    const r = await (await fetch('/api/place')).json();
+    if (r && r.place) {
+      PLACE = Object.assign(PLACE, r.place);
+      origin = { lat: PLACE.fallback.lat, lon: PLACE.fallback.lon };
+      // If the place sets a default language and the visitor hasn't a stronger signal, honor it.
+      if (PLACE.default_language && !/^es/i.test(navigator.language || '')) {
+        // only override when browser isn't already Spanish
+        if (PLACE.default_language === 'es') lang = 'es';
+      }
+    }
+  } catch (e) { /* keep defaults */ }
+}
 function start() {
-  setLang(lang); initMap();
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function (pos) { origin = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-        if (map) map.setCenter([origin.lon, origin.lat]); loadServices(); },
-      function () {}, { timeout: 6000 });
-  }
+  loadPlace().then(function () {
+    // Apply place identity to the header/title now that we have it.
+    if (PLACE.tagline) { I18N.en.title = PLACE.tagline; }
+    document.getElementById('t-title').textContent =
+      (lang === 'es' && I18N.es.title) ? I18N.es.title : (PLACE.tagline || I18N[lang].title);
+    if (PLACE.name && PLACE.name !== 'Your Community') {
+      document.getElementById('t-subtitle').textContent = PLACE.name;
+    }
+    document.title = PLACE.tagline || document.title;
+    setLang(lang); initMap();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (pos) { origin = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+          if (map) map.setCenter([origin.lon, origin.lat]); loadServices(); },
+        function () {}, { timeout: 6000 });
+    }
+  });
 }
 start();
 </script>
