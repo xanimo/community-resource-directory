@@ -89,6 +89,7 @@ const I18N = {
     error: 'Could not load services. Check your connection and try again.',
     directions: 'Directions',
     call: 'Call',
+    website: 'Website',
     hours: 'Hours',
     unverified: 'Unverified — confirm before you rely on it',
     footer: 'A community resource directory. Free to use, free to host.<br>No account, no tracking. <a href="/api/services">Open data</a>.',
@@ -102,6 +103,7 @@ const I18N = {
     error: 'No se pudieron cargar los servicios. Revisa tu conexión e intenta de nuevo.',
     directions: 'Cómo llegar',
     call: 'Llamar',
+    website: 'Sitio web',
     hours: 'Horario',
     unverified: 'Sin verificar — confirma antes de depender de esto',
     footer: 'Un directorio comunitario de recursos. Gratis de usar, gratis de alojar.<br>Sin cuenta, sin rastreo. <a href="/api/services">Datos abiertos</a>.',
@@ -181,21 +183,29 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;'
 function renderList(services) {
   document.getElementById('list').innerHTML = (services||[]).map(function (s) {
     const color = CAT_COLOR[s.category] || '#556070';
+    const contactOnly = !!s.contact_only;
     const dir = 'https://www.openstreetmap.org/?mlat=' + s.latitude + '&mlon=' + s.longitude + '#map=18/' + s.latitude + '/' + s.longitude;
     const tel = s.phone ? '<a class="btn secondary" href="tel:' + s.phone.replace(/[^0-9+]/g,'') + '">' + T().call + '</a>' : '';
+    const web = s.website ? '<a class="btn secondary" href="' + esc(s.website) + '" target="_blank" rel="noopener">' + T().website + '</a>' : '';
+    // Physical places get Directions; hotlines/online/programs (contact_only) don't —
+    // "directions" to a national hotline is meaningless, so show Website/Call instead.
+    const directions = contactOnly ? '' : '<a class="btn" href="' + dir + '" target="_blank" rel="noopener">' + T().directions + '</a>';
+    // Distance is only meaningful for a real destination.
+    const distance = contactOnly ? '' : '<span class="dist">' + fmtDist(s.distance_miles) + '</span>';
     const unver = s.needs_verification ? '<div class="unverified">' + T().unverified + '</div>' : '';
-    return '<div class="card"><div class="row1"><h2 class="name">' + esc(s.name) + '</h2><span class="dist">' + fmtDist(s.distance_miles) + '</span></div>'
+    return '<div class="card"><div class="row1"><h2 class="name">' + esc(s.name) + '</h2>' + distance + '</div>'
       + '<span class="cat" style="background:' + color + '">' + (CAT_LABEL[lang][s.category] || esc(s.category)) + '</span>'
       + '<div class="desc">' + esc(s.description || '') + '</div>'
       + '<div class="meta">' + esc(s.address || '') + (s.hours ? '<br><strong>' + T().hours + ':</strong> ' + esc(s.hours) : '') + '</div>'
       + unver
-      + '<div class="actions"><a class="btn" href="' + dir + '" target="_blank" rel="noopener">' + T().directions + '</a>' + tel + '</div></div>';
+      + '<div class="actions">' + directions + tel + web + '</div></div>';
   }).join('');
 }
 function renderMarkers(services) {
   if (!map) return;
   markers.forEach((m) => m.remove()); markers = [];
   (services||[]).forEach(function (s) {
+    if (s.contact_only) return; // hotlines/online/programs have no real location to pin
     const el = document.createElement('div');
     el.style.cssText = 'width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.4);background:' + (CAT_COLOR[s.category] || '#556070');
     const m = new maplibregl.Marker({ element: el }).setLngLat([s.longitude, s.latitude])

@@ -363,7 +363,8 @@
       "hours": "24 hours, every day",
       "website": "https://sfildc.org/rapid-response",
       "needs_verification": true,
-      "verification_note": "Hotline number; not a walk-in address."
+      "verification_note": "Hotline number; not a walk-in address.",
+      "contact_only": true
     },
     {
       "id": "marin-rapid-response-network",
@@ -378,7 +379,8 @@
       "hours": "Call for hours",
       "website": "https://www.ccijustice.org/carrn",
       "needs_verification": true,
-      "verification_note": "Hotline number; countywide."
+      "verification_note": "Hotline number; countywide.",
+      "contact_only": true
     },
     {
       "id": "acilep-hotline-alameda-county",
@@ -393,7 +395,8 @@
       "hours": "6am-6pm",
       "website": "https://www.acilep.org",
       "needs_verification": true,
-      "verification_note": "Hotline number; countywide."
+      "verification_note": "Hotline number; countywide.",
+      "contact_only": true
     },
     {
       "id": "centro-legal-de-la-raza",
@@ -506,7 +509,8 @@
       "hours": "Call/text to reach intake",
       "website": "https://www.lifemoves.org",
       "needs_verification": true,
-      "verification_note": "Shelter location is confidential for safety; contact by phone/text."
+      "verification_note": "Shelter location is confidential for safety; contact by phone/text.",
+      "contact_only": true
     },
     {
       "id": "sf-food-not-bombs-wednesday",
@@ -839,7 +843,8 @@
       "hours": "Apply by phone 9am-4:45pm",
       "website": "https://sfcommunityliving.org/transportation-options/",
       "needs_verification": true,
-      "verification_note": "Program, not a location; eligibility applies. Call 311 or 415-701-2311."
+      "verification_note": "Program, not a location; eligibility applies. Call 311 or 415-701-2311.",
+      "contact_only": true
     },
     {
       "id": "berkeley-rides-for-seniors-disabled",
@@ -869,7 +874,8 @@
       "hours": "Call your Medi-Cal plan 7+ days before appointment",
       "website": "https://www.ucsfhealth.org/health-articles/medi-cal-free-transportation",
       "needs_verification": true,
-      "verification_note": "Benefit, not a location; contact your specific Medi-Cal plan to arrange."
+      "verification_note": "Benefit, not a location; contact your specific Medi-Cal plan to arrange.",
+      "contact_only": true
     },
     {
       "id": "la-casa-de-las-madres",
@@ -884,7 +890,8 @@
       "hours": "24 hours, every day",
       "website": "https://www.lacasa.org",
       "needs_verification": true,
-      "verification_note": "Shelter location is confidential for safety. Call the hotline; do not seek a walk-in address."
+      "verification_note": "Shelter location is confidential for safety. Call the hotline; do not seek a walk-in address.",
+      "contact_only": true
     },
     {
       "id": "w-o-m-a-n-inc",
@@ -899,7 +906,8 @@
       "hours": "24 hours, every day",
       "website": "https://www.womaninc.org",
       "needs_verification": true,
-      "verification_note": "Support line; not a walk-in shelter address."
+      "verification_note": "Support line; not a walk-in shelter address.",
+      "contact_only": true
     },
     {
       "id": "family-violence-law-center",
@@ -928,7 +936,8 @@
       "hours": "24 hours, every day",
       "website": "https://www.thehotline.org",
       "needs_verification": true,
-      "verification_note": "National hotline, not a location."
+      "verification_note": "National hotline, not a location.",
+      "contact_only": true
     },
     {
       "id": "988-suicide-crisis-lifeline",
@@ -943,7 +952,8 @@
       "hours": "24 hours, every day",
       "website": "https://988lifeline.org",
       "needs_verification": true,
-      "verification_note": "National line, not a location."
+      "verification_note": "National line, not a location.",
+      "contact_only": true
     },
     {
       "id": "california-peer-run-warm-line",
@@ -958,7 +968,8 @@
       "hours": "24 hours, every day",
       "website": "https://www.mentalhealthsf.org/peer-run-warmline/",
       "needs_verification": true,
-      "verification_note": "Statewide warm line, not a location; non-emergency support."
+      "verification_note": "Statewide warm line, not a location; non-emergency support.",
+      "contact_only": true
     },
     {
       "id": "crisis-support-services-of-alameda-county",
@@ -973,7 +984,8 @@
       "hours": "24 hours, every day",
       "website": "https://www.crisissupport.org",
       "needs_verification": true,
-      "verification_note": "Crisis line; the office is not a walk-in service."
+      "verification_note": "Crisis line; the office is not a walk-in service.",
+      "contact_only": true
     },
     {
       "id": "mh-first-oakland",
@@ -1003,7 +1015,8 @@
       "hours": "24 hours, every day",
       "website": "https://sfwar.org",
       "needs_verification": true,
-      "verification_note": "Crisis line; confidential. Not a walk-in address."
+      "verification_note": "Crisis line; confidential. Not a walk-in address.",
+      "contact_only": true
     },
     {
       "id": "alameda-health-sarrt-highland-hospital",
@@ -1033,7 +1046,8 @@
       "hours": "24 hours, every day",
       "website": "https://www.rainn.org",
       "needs_verification": true,
-      "verification_note": "National hotline, not a location."
+      "verification_note": "National hotline, not a location.",
+      "contact_only": true
     },
     {
       "id": "crop-ready-4-life",
@@ -1063,7 +1077,8 @@
       "hours": "Mon-Fri; see sf.gov/reentry-sf",
       "website": "https://www.sf.gov/reentry-sf",
       "needs_verification": true,
-      "verification_note": "Program with intake process, not a walk-in location."
+      "verification_note": "Program with intake process, not a walk-in location.",
+      "contact_only": true
     },
     {
       "id": "transitions-clinic-network",
@@ -1092,7 +1107,8 @@
       "hours": "Online, any time",
       "website": "https://www.abortionfinder.org",
       "needs_verification": true,
-      "verification_note": "Use this to find a real provider; it excludes fake clinics (CPCs). Not a location."
+      "verification_note": "Use this to find a real provider; it excludes fake clinics (CPCs). Not a location.",
+      "contact_only": true
     },
     {
       "id": "access-reproductive-justice",
@@ -1107,7 +1123,8 @@
       "hours": "Healthline; call for hours",
       "website": "https://accessrj.org",
       "needs_verification": true,
-      "verification_note": "Statewide fund/support network, not a walk-in location. Healthline 1-800-376-4636."
+      "verification_note": "Statewide fund/support network, not a walk-in location. Healthline 1-800-376-4636.",
+      "contact_only": true
     },
     {
       "id": "national-abortion-federation-hotline",
@@ -1122,7 +1139,8 @@
       "hours": "Call for hours",
       "website": "https://prochoice.org/patients/naf-hotline/",
       "needs_verification": true,
-      "verification_note": "National hotline (1-800-772-9100), not a location."
+      "verification_note": "National hotline (1-800-772-9100), not a location.",
+      "contact_only": true
     },
     {
       "id": "planned-parenthood-find-a-health-center",
@@ -1137,7 +1155,8 @@
       "hours": "Call or book online",
       "website": "https://www.plannedparenthood.org/health-center",
       "needs_verification": true,
-      "verification_note": "Use the finder for a verified center; individual locations vary. Not a single address."
+      "verification_note": "Use the finder for a verified center; individual locations vary. Not a single address.",
+      "contact_only": true
     },
     {
       "id": "repro-legal-helpline",
@@ -1152,7 +1171,8 @@
       "hours": "Confidential; see site",
       "website": "https://www.reprolegalhelpline.org",
       "needs_verification": true,
-      "verification_note": "Legal helpline (1-844-868-2812), not a location."
+      "verification_note": "Legal helpline (1-844-868-2812), not a location.",
+      "contact_only": true
     },
     {
       "id": "pit-stop-un-plaza",
@@ -1227,7 +1247,8 @@
       "hours": "Varies by site",
       "website": "https://data.sfgov.org/City-Infrastructure/Map-of-Public-Bathrooms/sxtt-wsyn",
       "needs_verification": true,
-      "verification_note": "A dataset of many restrooms, not one location; individual hours/access vary."
+      "verification_note": "A dataset of many restrooms, not one location; individual hours/access vary.",
+      "contact_only": true
     }
   ]
 }

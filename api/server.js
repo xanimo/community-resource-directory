@@ -16,7 +16,7 @@ const SEED_PATH = join(ROOT, 'data', 'seed.json');
 const PLACE_PATH = join(ROOT, 'data', 'place.json');
 const PORT = process.env.PORT || 8080;
 
-const COLS = ['id','name','organization','category','description','address','latitude','longitude','phone','hours','website'];
+const COLS = ['id','name','organization','category','description','address','latitude','longitude','phone','hours','website','needs_verification','contact_only'];
 
 // ---- DB: in-memory SQLite, source of truth is data/seed.json ----
 const db = new DatabaseSync(':memory:');
@@ -24,7 +24,8 @@ db.exec(`
   CREATE TABLE services (
     id TEXT PRIMARY KEY, name TEXT NOT NULL, organization TEXT, category TEXT,
     description TEXT, address TEXT, latitude REAL, longitude REAL,
-    phone TEXT, hours TEXT, website TEXT
+    phone TEXT, hours TEXT, website TEXT,
+    needs_verification INTEGER, contact_only INTEGER
   );
 `);
 
@@ -46,7 +47,7 @@ function visibleCategories(){
 }
 
 const insertStmt = db.prepare(`INSERT INTO services (${COLS.join(',')}) VALUES (${COLS.map(()=>'?').join(',')})`);
-function rowVals(s){ return [s.id, s.name, s.organization??'', s.category??'', s.description??'', s.address??'', s.latitude??null, s.longitude??null, s.phone??'', s.hours??'', s.website??'']; }
+function rowVals(s){ return [s.id, s.name, s.organization??'', s.category??'', s.description??'', s.address??'', s.latitude??null, s.longitude??null, s.phone??'', s.hours??'', s.website??'', s.needs_verification?1:0, s.contact_only?1:0]; }
 function loadDB(){ db.exec('DELETE FROM services'); for (const s of seed.services) insertStmt.run(...rowVals(s)); }
 loadDB();
 
