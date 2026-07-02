@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "spec": "HSDS-inspired (OpenReferral) minimal profile",
+    "note": "Blank template. Load with: node bin/bootstrap.js --example blank. Then add your community's services via /admin or an import (see SETUP.md).",
+    "taxonomy": [
+      "food",
+      "housing",
+      "hygiene",
+      "medical",
+      "legal",
+      "technology",
+      "legal_aid",
+      "rapid_response",
+      "lgbtq",
+      "harm_reduction",
+      "garden",
+      "community_space",
+      "csa",
+      "dental",
+      "transportation",
+      "domestic_violence",
+      "mental_health_crisis",
+      "sexual_assault",
+      "reentry"
+    ]
+  },
+  "services": []
+}

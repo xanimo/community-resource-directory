@@ -1,27 +1,10 @@
 {
-  "name": "Your Community",
+  "name": "San Francisco Bay Area",
   "tagline": "Find help near you",
-  "center": {
-    "lat": 39.8283,
-    "lon": -98.5795
-  },
-  "zoom": 4,
-  "fallback": {
-    "lat": 39.8283,
-    "lon": -98.5795
-  },
+  "center": { "lat": 37.7793, "lon": -122.4193 },
+  "zoom": 9,
+  "fallback": { "lat": 37.7793, "lon": -122.4193 },
   "default_language": "en",
-  "languages": [
-    "en",
-    "es"
-  ],
-  "categories": [],
-  "_help": {
-    "name": "Shown in header/title, e.g. 'Sonoma County'.",
-    "center": "Map initial center (decimal degrees).",
-    "zoom": "City ~12, county ~10, region ~8. 4 = whole US until you set your place.",
-    "fallback": "Sort origin when a visitor declines location. Usually same as center.",
-    "categories": "Empty = show all categories in the data; or list a subset.",
-    "note": "The one file that makes this instance local. See SETUP.md."
-  }
+  "languages": ["en", "es"],
+  "categories": []
 }

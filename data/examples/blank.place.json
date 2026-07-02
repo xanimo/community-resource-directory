@@ -1,0 +1,19 @@
+{
+  "name": "Your Community",
+  "tagline": "Find help near you",
+  "center": {
+    "lat": 39.8283,
+    "lon": -98.5795
+  },
+  "zoom": 4,
+  "fallback": {
+    "lat": 39.8283,
+    "lon": -98.5795
+  },
+  "default_language": "en",
+  "languages": [
+    "en",
+    "es"
+  ],
+  "categories": []
+}

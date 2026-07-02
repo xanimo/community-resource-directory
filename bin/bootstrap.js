@@ -26,7 +26,7 @@
 //   --zoom <num>       Initial zoom (city ~12, county ~10, region ~8). Default 11.
 //   --lang <code>      Default language (default "en").
 //   --import <path|url>  HSDS source to seed data from (file, dir, or URL).
-//   --example <name>   Load a bundled example (currently: bay-area). Ignores other flags.
+//   --example <name>   Load a bundled example (bay-area or blank). Ignores other flags.
 //   --dry-run          Print what would be written without writing.
 
 import { readFileSync, writeFileSync, existsSync, copyFileSync } from 'node:fs';

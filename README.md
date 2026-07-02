@@ -27,12 +27,7 @@ just agencies.
 
 ## Quick start
 
-This ships **blank** — a working app with no data, ready to become yours. Point
-it at your town:
-
-    node bin/bootstrap.js --name "Your County" --lat 38.29 --lon -122.46 --zoom 10
-
-Then run it, with Docker:
+Run it, with Docker:
 
     docker compose up
 
@@ -40,10 +35,19 @@ Or with Node 22+ directly:
 
     node api/server.js
 
-Then open http://localhost:8080. To see a fully populated instance first, load
-the bundled Bay Area example with `node bin/bootstrap.js --example bay-area`.
-Full setup guide: [SETUP.md](SETUP.md). To go live on a real domain with HTTPS,
-see [Deploying](#deploying), below.
+Then open http://localhost:8080. It ships populated with the **San Francisco Bay
+Area** instance (73 community + mutual-aid services across 19 categories) so it
+works out of the box and shows what a filled-in directory looks like.
+
+**Deploying for a different place?** This is still a template. Reset to a blank
+slate and point it at your town:
+
+    node bin/bootstrap.js --example blank        # clear to an empty template
+    node bin/bootstrap.js --name "Your County" --lat 38.29 --lon -122.46 --zoom 10
+
+Full setup guide: [SETUP.md](SETUP.md). Where to find real mutual-aid data to
+load: [SOURCES.md](SOURCES.md). To go live on a real domain with HTTPS, see
+[Deploying](#deploying), below.
 
 ## What it does
 
