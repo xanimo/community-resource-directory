@@ -18,6 +18,12 @@ export const CATEGORY_TO_OE = {
   // Rapid-response / immigration-enforcement hotlines have no Open Eligibility
   // equivalent; keep local rather than force a bad fit.
   rapid_response: { code: 'rapid_response', name: 'Rapid Response', taxonomy: 'local', parent_id: '' },
+  // Harm reduction / syringe services: Open Eligibility has no dedicated term
+  // (it's health-adjacent but distinct); keep local.
+  harm_reduction: { code: 'harm_reduction', name: 'Harm Reduction', taxonomy: 'local', parent_id: '' },
+  // LGBTQ+ is an audience/population, not a service type — HSDS models that via
+  // attributes, not the service taxonomy. Keep as a local findability tag.
+  lgbtq: { code: 'lgbtq', name: 'LGBTQ+', taxonomy: 'local', parent_id: '' },
   // No suitable Open Eligibility parent for general tech/computer access; keep local.
   technology: { code: 'technology', name: 'Technology Access', taxonomy: 'local', parent_id: '' },
 };

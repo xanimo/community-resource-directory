@@ -1,7 +1,8 @@
 # Community Resource Directory
 
 A mobile-first "find help near you" directory — food, shelter, showers, medical
-care, legal aid, and immigration rapid-response — that a community can stand up
+care, legal aid, immigration rapid-response, LGBTQ+ services, harm reduction,
+and mutual-aid meals — that a community can stand up
 in an afternoon and maintain itself. **Free to use, free to host, no account, no
 tracking.**
 
