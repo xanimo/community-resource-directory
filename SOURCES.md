@@ -48,6 +48,29 @@ so freshness matters more here than for institutional data.
 | [NHRC / CA syringe programs](https://harmreduction.org/) | Harm-reduction program map/list | US / CA | Scrape + verify | Medium |
 | Regional collabs (e.g. East Bay Getting to Zero) | Kept-current cross-org contact lists | Regional | Hand-curate (often the freshest local truth) | Medium |
 
+## Reproductive & bodily-safety access
+
+| Source | What it is | Coverage | Ingest | Volatility |
+|---|---|---|---|---|
+| [AbortionFinder](https://www.abortionfinder.org) | Largest directory of **verified** abortion providers; screens out fake "crisis pregnancy centers" (CPCs) | US | Hand-curate / link (their search is the safe entry point) | Medium |
+| [ACCESS Reproductive Justice](https://accessrj.org) | California abortion fund + practical-support volunteer network (rides, funding, doula support) — mutual-aid model | CA | Hand-curate | Low |
+| [National Abortion Federation hotline](https://prochoice.org) | Hotline to verified providers + financial aid | US | Hand-curate | Low |
+
+> **CPC safety note.** Never map individual abortion-clinic addresses from an
+> unverified source. Fake "crisis pregnancy centers" deliberately pose as clinics
+> to dissuade people. Point only to directories that screen them out
+> (AbortionFinder, NAF, Planned Parenthood's own finder). This is why this
+> project's abortion entries link to *verified directories and funds*, not scraped
+> clinic pins.
+
+## Public restrooms
+
+| Source | What it is | Coverage | Ingest | Volatility |
+|---|---|---|---|---|
+| [SF Public Bathroom Map (DataSF)](https://data.sfgov.org/City-Infrastructure/Map-of-Public-Bathrooms/sxtt-wsyn) | **Real open dataset** of city restrooms + drinking fountains (the county-portal exception) | San Francisco | **Direct import** via Socrata: `https://data.sfgov.org/resource/sxtt-wsyn.csv?$limit=999999` | Low–medium |
+| [SF Pit Stop program](https://sfpublicworks.org/pitstop) | Staffed public toilets in high-need neighborhoods, some 24-hour | San Francisco | Hand-curate (page lists sites + hours) | Medium (sites/hours change) |
+| OpenStreetMap `amenity=toilets` | Crowd-mapped public toilets worldwide | Worldwide | Direct import (Overpass API) | Medium |
+
 ## Tools, seeds, repair
 
 | Source | What it is | Coverage | Ingest | Volatility |

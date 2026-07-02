@@ -27,6 +27,12 @@ export const CATEGORY_TO_OE = {
   // Mental-health crisis lines map to Counseling (verified OE 1220 under Prevent & Treat).
   mental_health_crisis: { code: '1220', name: 'Counseling', taxonomy: 'Open Eligibility', parent_id: '1219' },
   reentry: { code: 'reentry', name: 'Reentry', taxonomy: 'local', parent_id: '' },
+  // Open Eligibility has no accurate term for abortion access (its closest,
+  // "Family Planning" under Health Education, is a different thing) or for public
+  // restrooms ("Personal Hygiene" means hygiene services/showers, not toilets).
+  // Keep both local rather than force a misleading fit.
+  abortion: { code: 'abortion', name: 'Abortion Access', taxonomy: 'local', parent_id: '' },
+  bathroom: { code: 'bathroom', name: 'Public Restroom', taxonomy: 'local', parent_id: '' },
   legal:      { code: '1111', name: 'Legal',           taxonomy: 'Open Eligibility', parent_id: '' },
   legal_aid:  { code: '1375', name: 'Advocacy & Legal Aid', taxonomy: 'Open Eligibility', parent_id: '1111' },
   // Rapid-response / immigration-enforcement hotlines have no Open Eligibility
