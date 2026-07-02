@@ -21,9 +21,11 @@ export const CATEGORY_TO_OE = {
   // Domestic violence and sexual assault map to Open Eligibility "Help Escape
   // Violence" under Immediate Safety / Emergency.
   domestic_violence: { code: '1124', name: 'Help Escape Violence', taxonomy: 'Open Eligibility', parent_id: '1123' },
-  sexual_assault:    { code: '1124', name: 'Help Escape Violence', taxonomy: 'Open Eligibility', parent_id: '1123' },
-  // Open Eligibility has no dedicated crisis-line or reentry term; keep local.
-  mental_health_crisis: { code: 'mental_health_crisis', name: 'Mental Health Crisis', taxonomy: 'local', parent_id: '' },
+  // No dedicated Open Eligibility term for sexual-assault crisis services; keep local
+  // (do NOT reuse the domestic-violence code — they are distinct services).
+  sexual_assault:    { code: 'sexual_assault', name: 'Sexual Assault Support', taxonomy: 'local', parent_id: '' },
+  // Mental-health crisis lines map to Counseling (verified OE 1220 under Prevent & Treat).
+  mental_health_crisis: { code: '1220', name: 'Counseling', taxonomy: 'Open Eligibility', parent_id: '1219' },
   reentry: { code: 'reentry', name: 'Reentry', taxonomy: 'local', parent_id: '' },
   legal:      { code: '1111', name: 'Legal',           taxonomy: 'Open Eligibility', parent_id: '' },
   legal_aid:  { code: '1375', name: 'Advocacy & Legal Aid', taxonomy: 'Open Eligibility', parent_id: '1111' },
@@ -53,6 +55,7 @@ export const OE_PARENTS = {
   '1103': { code: '1103', name: 'Housing',     taxonomy: 'Open Eligibility', parent_id: '' },
   '1106': { code: '1106', name: 'Health',      taxonomy: 'Open Eligibility', parent_id: '' },
   '1206': { code: '1206', name: 'Medical Care', taxonomy: 'Open Eligibility', parent_id: '1106' },
+  '1219': { code: '1219', name: 'Prevent & Treat', taxonomy: 'Open Eligibility', parent_id: '1206' },
 };
 
 // Resolve a local category to its taxonomy term descriptor.

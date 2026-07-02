@@ -1004,19 +1004,19 @@
       "verification_note": "Crisis line; confidential. Not a walk-in address."
     },
     {
-      "id": "bay-area-women-against-rape-bawar",
-      "name": "Bay Area Women Against Rape (BAWAR)",
-      "organization": "Bay Area Women Against Rape",
+      "id": "alameda-health-sarrt-highland-hospital",
+      "name": "Alameda Health SARRT (Highland Hospital)",
+      "organization": "Alameda Health System \u2014 Sexual Assault Response & Recovery Team",
       "category": "sexual_assault",
-      "description": "The first rape-crisis center in the U.S. (1971). 24-hour hotline, peer counseling, and hospital/court accompaniment for anyone affected by sexual violence. English and Spanish.",
-      "address": "470 27th St, Oakland, CA 94612",
-      "latitude": 37.8115,
-      "longitude": -122.268,
-      "phone": "510-845-7273",
-      "hours": "Hotline 24hr; office Mon-Fri 9-5",
-      "website": "https://bawar.org",
+      "description": "Sexual-assault and domestic-violence medical response and recovery services based at Highland Hospital in Oakland: forensic exams, advocacy, and follow-up care. (Now the primary Alameda County referral after BAWAR closed in 2025.)",
+      "address": "1411 E 31st St, Oakland, CA 94602",
+      "latitude": 37.797,
+      "longitude": -122.234,
+      "phone": "510-534-9290",
+      "hours": "Call for 24-hour response",
+      "website": "https://www.alamedahealthsystem.org/sarrt/",
       "needs_verification": true,
-      "verification_note": "Confirm current hotline number; sources list both 510-845-7273 and 510-800-4247."
+      "verification_note": "Replaced BAWAR, which closed permanently in Sept 2025. Confirm current intake/response process."
     },
     {
       "id": "national-sexual-assault-hotline-rainn",
