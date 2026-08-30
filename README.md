@@ -12,6 +12,10 @@ It imports and exports real [OpenReferral / HSDS](https://docs.openreferral.org)
 data, runs bilingual (English/Spanish), deploys with automatic HTTPS in about
 fifteen minutes, and keeps no logs of the people who use it.
 
+Live demo: **https://xanimo.github.io/community-resource-directory/** — the
+bundled Bay Area instance as a static snapshot, admin editor included (password
+`demo`; edits there live in your browser tab, not on a server).
+
 This kind of tool keeps getting built and keeps dying. Ohana (Code for America,
 2013) rotted when the fellowship ended. Link-SF (Zendesk + St. Anthony's, 2014)
 was archived in 2022. Each time the *need* stayed and the *maintained tool*
@@ -161,6 +165,15 @@ There's also a bare-host installer (`deploy/install-baremetal.sh`) and an
 nginx + certbot alternative. Full step-by-step for a fresh VM is in
 [deploy/PUBLISHING.md](deploy/PUBLISHING.md); privacy guidance for at-risk
 communities is in [deploy/PRIVACY.md](deploy/PRIVACY.md).
+
+For a demo rather than a working instance, `node bin/build-static.js` bakes the
+current data into a static bundle in `dist/` that any dumb host will serve. A
+fetch shim answers the read endpoints from JSON and fakes the admin API against
+sessionStorage, so the editor is clickable but nothing persists. Pushing to
+`master` publishes it to GitHub Pages via
+[.github/workflows/pages.yml](.github/workflows/pages.yml). A static snapshot is
+a demo, not a directory people should rely on: it can't be corrected without a
+rebuild.
 
 ## For organizers
 

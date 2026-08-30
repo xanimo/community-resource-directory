@@ -7,3 +7,6 @@ data/*.db
 # HSDS export output
 hsds-export/
 hsds-export.zip
+
+# static demo build
+dist/

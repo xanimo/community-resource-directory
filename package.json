@@ -10,7 +10,8 @@
     "start": "node api/server.js",
     "import": "node importer/import-hsds.js",
     "export": "node importer/export-hsds.js",
-    "bootstrap": "node bin/bootstrap.js"
+    "bootstrap": "node bin/bootstrap.js",
+    "build:static": "node bin/build-static.js"
   },
   "license": "MIT"
 }
