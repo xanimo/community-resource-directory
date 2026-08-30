@@ -12,8 +12,6 @@ It imports and exports real [OpenReferral / HSDS](https://docs.openreferral.org)
 data, runs bilingual (English/Spanish), deploys with automatic HTTPS in about
 fifteen minutes, and keeps no logs of the people who use it.
 
-## Why this exists
-
 This kind of tool keeps getting built and keeps dying. Ohana (Code for America,
 2013) rotted when the fellowship ended. Link-SF (Zendesk + St. Anthony's, 2014)
 was archived in 2022. Each time the *need* stayed and the *maintained tool*
@@ -48,8 +46,6 @@ slate and point it at your town:
 Full setup guide: [SETUP.md](SETUP.md). Where to find real mutual-aid data to
 load: [SOURCES.md](SOURCES.md). To go live on a real domain with HTTPS, see
 [Deploying](#deploying), below.
-
-## What it does
 
 - **Distance-sorted list** of nearby services, closest first, filterable by
   category. Works from browser geolocation or a sensible fallback; the list

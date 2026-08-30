@@ -1,5 +1,3 @@
-# Why this exists
-
 This is a directory of survival resources — food, shelter, showers, medical
 care, legal aid, and rapid-response networks — that anyone can stand up for
 their own community in an afternoon, and that nobody can take away.
@@ -11,8 +9,6 @@ community survival programs — mutual-aid efforts that treat food, shelter, and
 legal help as things people deserve, not favors to be earned. This tool is a
 small piece of infrastructure in that spirit. Not a startup, not a service you
 depend on us for. A blueprint you copy.
-
-## What that means in the code
 
 - **It runs anywhere, on almost nothing.** One Node file and a SQLite database.
   No framework, no build step, no cloud account. `docker compose up` and it's
@@ -43,8 +39,6 @@ If you want to make it better for everyone, contributions are welcome. Things
 that would help most: more languages, more verified regional data, accessibility
 improvements, and offline/low-bandwidth support for people on cheap phones and
 weak connections.
-
-## What this is not
 
 This is not a surveillance tool and must not become one. It maps *help* — the
 locations of services and the phone numbers of people who assist. It does not

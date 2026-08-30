@@ -45,8 +45,6 @@ first (for the app + systemd service), then:
 certbot installs the cert, enables the HTTP→HTTPS redirect, and sets up
 automatic renewal (test it with `certbot renew --dry-run`).
 
-## Why this matters
-
 The `/admin` editor authenticates with a password. Over plain HTTP that
 password crosses the wire in the clear — so if you expose this instance to the
 internet at all, terminate TLS in front of it. Every option here does that.
